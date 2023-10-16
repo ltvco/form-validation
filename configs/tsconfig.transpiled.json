@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["ESNext", "dom", "dom.iterable"],
+    "moduleResolution": "Node",
+    "outDir": "../dist/js",
+    "declarationDir": "../dist/js/types"
+  }
+}
