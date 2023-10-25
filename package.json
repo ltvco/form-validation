@@ -1,5 +1,5 @@
 {
-  "name": "@ltvco/form-validation",
+  "name": "form-validation",
   "version": "1.0.0",
   "description": "Library to handle form validation, similar to jQuery Validation, but without any dependencies.",
   "types": "./dist/types/index.d.ts",
