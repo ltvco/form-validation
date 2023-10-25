@@ -105,7 +105,7 @@ export class Validation implements FormValidation {
   private createError(field: ValidatorInput, fieldConfig: FieldConfig) {
     const { errorPlacement, inputContainer, errorTag } = fieldConfig;
     const errorElement = document.createElement(errorTag || 'p');
-    errorElement.className = `${field.name.replace(/\[/g, '-').replace(/\]/g, '')}-error-element error`;
+    errorElement.className = `${field.name.replace('[', '-').replace(']', '')}-error-element error`;
 
     if (errorPlacement) {
       if (typeof errorPlacement !== 'function') {
@@ -144,12 +144,12 @@ export class Validation implements FormValidation {
       fieldErrorHandler(field, message, fieldConfig, this.form);
     } else {
       // If there's no error element yet, create it.
-      if (!this.form.querySelector(`.${field.name.replace(/\[/g, '-').replace(/\]/g, '')}-error-element`)) this.createError(field, fieldConfig);
+      if (!this.form.querySelector(`.${field.name.replace('[', '-').replace(']', '')}-error-element`)) this.createError(field, fieldConfig);
 
       const inputParent = typeof inputContainer === 'string' ? (field.closest(inputContainer) as HTMLElement) : inputContainer || (field.parentElement as HTMLElement);
 
       if ((optional && field.value) || !optional) {
-        const errorElement = this.form.querySelector(`.${field.name.replace(/\[/g, '-').replace(/\]/g, '')}-error-element`) as HTMLElement;
+        const errorElement = this.form.querySelector(`.${field.name.replace('[', '-').replace(']', '')}-error-element`) as HTMLElement;
 
         errorElement.innerHTML = message;
         errorElement.style.display = 'block';
@@ -184,7 +184,7 @@ export class Validation implements FormValidation {
       fieldValidHandler(field, fieldConfig, this.form);
     } else {
       const inputParent = typeof inputContainer === 'string' ? (field.closest(inputContainer) as HTMLElement) : inputContainer || (field.parentElement as HTMLElement);
-      const errorElement = this.form.querySelector(`.${field.name.replace(/\[/g, '-').replace(/\]/g, '')}-error-element`) as HTMLElement;
+      const errorElement = this.form.querySelector(`.${field.name.replace('[', '-').replace(']', '')}-error-element`) as HTMLElement;
 
       inputParent.classList.remove(errorClass || 'error');
       field.classList.remove('error');
