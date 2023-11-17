@@ -147,7 +147,7 @@ const isFieldValid = myValidation.isFieldValid('myField');
 - Fork this [repository](https://github.com/ltvco/form-validation).
   - Clicking the fork button at the top right of the page.
     - Select your personal account as the owner for the fork.
-    - Uncheck the checkbox to keep all the branches in sync not just the master branch.
+    - Uncheck the checkbox to keep all the branches in sync not just the main branch.
     - Click the fork button.
 - Go to your github account.
 - Go to your repositories and clone you fork of `form-validation` repository using SSH.
@@ -160,8 +160,8 @@ const isFieldValid = myValidation.isFieldValid('myField');
 - Check that you have the remotes correctly configured:
   - `git remote -v`
   - You should see something like this (with your username):
-    - `origin  git@github.com:KennethCalvo/form-validation.git (fetch)`
-    - `origin  git@github.com:KennethCalvo/form-validation.git (push)`
+    - `origin  git@github.com:JohnDoe/form-validation.git (fetch)`
+    - `origin  git@github.com:JohnDoe/form-validation.git (push)`
     - `upstream https://github.com/ltvco/form-validation (fetch)`
     - `upstream https://github.com/ltvco/form-validation (push)`
       - Origin is your fork.
