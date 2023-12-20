@@ -1,0 +1,38 @@
+{
+  "name": "form-validation",
+  "version": "1.0.0",
+  "description": "Library to handle form validation, similar to jQuery Validation, but without any dependencies.",
+  "types": "./dist/types/index.d.ts",
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "del-cli ./dist",
+    "build": "npm run clean && npm run build:minified && npm run build:transpiled",
+    "build:transpiled": "tsc -p ./configs/tsconfig.transpiled.json",
+    "build:minified": "webpack --config ./webpack.config.js",
+    "prepack": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ltvco/form-validation"
+  },
+  "keywords": [
+    "form",
+    "validation",
+    "No dependencies",
+    "No Jquery"
+  ],
+  "author": "LTV",
+  "license": "MIT",
+  "devDependencies": {
+    "del-cli": "^5.1.0",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}
