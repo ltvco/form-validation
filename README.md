@@ -21,13 +21,13 @@ The `FormValidation.js` is a JavaScript form validation class that provides a fl
 Just install it into your project using npm:
 
 ```bash
-npm install form-validation
+npm install @ltvco/form-validation
 ```
 
 ### 2. Importing
 
 ```js
-import { Validation } from 'form-validation';
+import { Validation } from '@ltvco/form-validation';
 ```
 
 ### 3. Configuration

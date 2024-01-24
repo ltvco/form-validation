@@ -1,5 +1,5 @@
 {
-  "name": "form-validation",
+  "name": "@ltvco/form-validation",
   "version": "1.0.0",
   "description": "Library to handle form validation, similar to jQuery Validation, but without any dependencies.",
   "types": "./dist/types/index.d.ts",
@@ -9,9 +9,7 @@
   ],
   "scripts": {
     "clean": "del-cli ./dist",
-    "build": "npm run clean && npm run build:minified && npm run build:transpiled",
-    "build:transpiled": "tsc -p ./configs/tsconfig.transpiled.json",
-    "build:minified": "webpack --config ./webpack.config.js",
+    "build": "npm run clean && webpack --config ./webpack.config.js",
     "prepack": "npm run build"
   },
   "repository": {
