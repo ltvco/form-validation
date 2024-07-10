@@ -39,7 +39,7 @@ export class Validation implements FormValidation {
       if (typeof config !== 'object') throw new Error('Config must be an object.');
       this.config = {
         ...this.config,
-        ...config,
+        ...this.cloneDeep(config),
       };
     }
 
@@ -593,5 +593,32 @@ export class Validation implements FormValidation {
 
     this.config.fields[fieldName] = { ...config };
     this.setupFieldConfig(fieldName, config.rules, config.messages);
+  }
+
+
+  /**
+   * Clones an object deeply.
+   * We need this method to clone the configuration object and allow us to use the same configuration object in different instances.
+   * @param {T} obj - Object to clone.
+   * @returns {T} - Cloned object.
+   */
+  cloneDeep<T>(obj: T): T {
+    if (obj === null || typeof obj !== "object") {
+      return obj;
+    }
+
+    if (Array.isArray(obj)) {
+      const copy: any = [];
+      obj.forEach((elem, index) => {
+        copy[index] = this.cloneDeep(elem);
+      });
+      return copy;
+    }
+
+    const copy: any = {};
+    Object.keys(obj).forEach((key) => {
+      copy[key] = this.cloneDeep((obj as any)[key]);
+    });
+    return copy;
   }
 }
