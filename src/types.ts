@@ -53,6 +53,12 @@ export interface Config {
   invalidHandler: (errors: Array<[ValidatorInput, Message] | boolean>, form?: HTMLFormElement) => void;
 }
 
+export type ParamConfig = Omit<Partial<Config>, 'fields'> & {
+  fields: {
+    [key: string]: Partial<FieldConfig>;
+  };
+};
+
 export interface FormValidation {
   isValid: () => boolean;
   validateForm: (silently?: boolean) => boolean;
