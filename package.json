@@ -10,7 +10,9 @@
   "scripts": {
     "clean": "del-cli ./dist",
     "build": "npm run clean && webpack --config ./webpack.config.js",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "dev": "http-server . -p 3000",
+    "test": "npm run build & playwright test"
   },
   "repository": {
     "type": "git",
@@ -25,7 +27,10 @@
   "author": "LTV",
   "license": "MIT",
   "devDependencies": {
+    "@playwright/test": "^1.45.2",
+    "@types/node": "^20.14.11",
     "del-cli": "^5.1.0",
+    "http-server": "^14.1.1",
     "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
