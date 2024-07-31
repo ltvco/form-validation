@@ -1,5 +1,5 @@
 import validatorRules from './rules';
-import { Config, Flag, FormValidation, Message, FieldConfig, Rules, ValidatorInput, RuleValidator, FormDataObject, MessageFunction, PreprocessedMessages } from './types';
+import { Config, Flag, FormValidation, Message, FieldConfig, Rules, ValidatorInput, RuleValidator, FormDataObject, MessageFunction, PreprocessedMessages, ParamConfig } from './types';
 const WRITEABLE_INPUTS = ['text', 'password', 'textarea', 'email', 'number', 'search', 'tel', 'url', 'date', 'month', 'week', 'time', 'datetime', 'datetime-local'];
 
 /** Validate Form Class **/
@@ -28,7 +28,7 @@ export class Validation implements FormValidation {
    * @param {Rules} [rules] Object containing custom rules to apply to the validation.
    * @returns {Validation} An instance with the validation.
    */
-  constructor(form: HTMLFormElement | string, config?: Config, rules?: Rules) {
+  constructor(form: HTMLFormElement | string, config?: ParamConfig, rules?: Rules) {
     if (!form) throw new Error('A valid form element or selector is required.');
     if (typeof form !== 'string' && !(form instanceof Node)) throw new Error('Form must be a string or a HTML Element.');
     if (typeof form === 'string' && !document.querySelector(form)) throw new Error(`Form selector "${form}" not found.`);
@@ -40,7 +40,7 @@ export class Validation implements FormValidation {
       this.config = {
         ...this.config,
         ...this.cloneDeep(config),
-      };
+      } as Config;
     }
 
     if (rules && Object.keys(rules).length) {
@@ -396,7 +396,7 @@ export class Validation implements FormValidation {
 
     const { inputContainer, optional } = this.config.fields[fieldName];
     if (inputContainer && typeof inputContainer === 'string') {
-      const inputContainerElement = field.closest(inputContainer) as HTMLElement;
+      const inputContainerElement = field.closest(inputContainer) as unknown as HTMLElement;
 
       if (!inputContainerElement) throw new Error(`Input container "${inputContainerElement}" not found.`);
       this.config.fields[fieldName].inputContainer = inputContainerElement;
