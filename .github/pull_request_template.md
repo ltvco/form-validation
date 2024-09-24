@@ -7,11 +7,9 @@
 
 [Describe the steps you followed to test the changes made in this PR. Include details about the environment, configurations, and any test cases.]
 
-
 # Related Issue
 
 [If this PR addresses an open issue, link it here (e.g., #4).]
-
 
 ## Type of Change / Changes Made
 
@@ -23,6 +21,7 @@
 - [ ] This change requires a documentation update
 
 ## Checklist:
+
 - [ ] I have read the contributing guidelines
 - [ ] My code follows the style guidelines of this project
 - [ ] I have commented my code, particularly in hard-to-understand areas
@@ -31,7 +30,6 @@
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
 
-
 # Screenshots (if applicable)
 
 [Add screenshots or GIFs to explain the visual changes in this PR.]
@@ -39,4 +37,3 @@
 # Additional Information
 
 [Provide any additional context or information about this PR.]
-
