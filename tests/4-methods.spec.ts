@@ -9,7 +9,7 @@ Public Methods Testing
 // */
 
 import { test, expect } from '@playwright/test';
-import { Validation } from '../src/index'
+import { Validation } from '../src/index';
 
 // Extend the window object to include the Validation class
 declare global {
@@ -20,14 +20,13 @@ declare global {
 }
 
 test.beforeEach(async ({ page }) => {
-  page.on('console', msg => console.log(msg.text())); // Capture console logs
-  
+  page.on('console', (msg) => console.log(msg.text())); // Capture console logs
+
   await page.goto('http://127.0.0.1:3000/tests');
 
   await page.evaluate(() => {
     window.validationInstance = new window.Validation('#testForm', {
-      submitCallback: () => {
-      },
+      submitCallback: () => {},
       fields: {
         name: {
           rules: ['required'],
@@ -40,9 +39,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-
 test.describe('Validation Methods', () => {
-
   // TESTS
 
   test.describe('#isValid', () => {
@@ -58,11 +55,13 @@ test.describe('Validation Methods', () => {
       const isValid = await page.evaluate(() => {
         return window.validationInstance.isValid();
       });
-  
+
       expect(isValid).toBe(true);
     });
 
-    test('should return false when there are validation errors', async ({ page }) => {
+    test('should return false when there are validation errors', async ({
+      page,
+    }) => {
       const nameInput = await page.$('#name');
       const emailInput = await page.$('#email');
       const ageInput = await page.$('#age');
@@ -74,13 +73,15 @@ test.describe('Validation Methods', () => {
       const isValid = await page.evaluate(() => {
         return window.validationInstance.isValid();
       });
-  
+
       expect(isValid).toBe(false);
     });
   });
 
   test.describe('#validateForm', () => {
-    test('should validate the form and return true when valid', async ({ page }) => {
+    test('should validate the form and return true when valid', async ({
+      page,
+    }) => {
       const nameInput = await page.$('#name');
       const emailInput = await page.$('#email');
       const ageInput = await page.$('#age');
@@ -92,11 +93,13 @@ test.describe('Validation Methods', () => {
       const isValid = await page.evaluate(() => {
         return window.validationInstance.validateForm();
       });
-  
+
       expect(isValid).toBe(true);
     });
 
-    test('should validate the form and return false when invalid', async ({ page }) => {
+    test('should validate the form and return false when invalid', async ({
+      page,
+    }) => {
       const nameInput = await page.$('#name');
       const emailInput = await page.$('#email');
       const ageInput = await page.$('#age');
@@ -108,33 +111,37 @@ test.describe('Validation Methods', () => {
       const isValid = await page.evaluate(() => {
         return window.validationInstance.validateForm();
       });
-  
+
       expect(isValid).toBe(false);
     });
   });
 
   test.describe('#isFieldValid', () => {
-    test('should return true when a specific field is valid', async ({ page }) => {
+    test('should return true when a specific field is valid', async ({
+      page,
+    }) => {
       const emailInput = await page.$('#email');
 
       await emailInput?.fill('john.doe@gmail.com');
 
       const isValid = await page.evaluate(() => {
-        return window.validationInstance.isFieldValid("email");
+        return window.validationInstance.isFieldValid('email');
       });
-      
+
       expect(isValid).toBe(true);
     });
 
-    test('should return false when a specific field is invalid', async ({ page }) => {
+    test('should return false when a specific field is invalid', async ({
+      page,
+    }) => {
       const emailInput = await page.$('#email');
 
       await emailInput?.fill('invalid-email');
 
       const isValid = await page.evaluate(() => {
-        return window.validationInstance.isFieldValid("email");
+        return window.validationInstance.isFieldValid('email');
       });
-  
+
       expect(isValid).toBe(false);
     });
 
@@ -142,17 +149,19 @@ test.describe('Validation Methods', () => {
       // Test the isFieldValid method when the field is empty
       try {
         await page.evaluate(() => {
-          return window.validationInstance.isFieldValid("");
+          return window.validationInstance.isFieldValid('');
         });
       } catch (error) {
         expect(error).toBeTruthy();
       }
     });
 
-    test('should throw an error if the field does not exist', async ({ page }) => {
+    test('should throw an error if the field does not exist', async ({
+      page,
+    }) => {
       try {
         await page.evaluate(() => {
-          return window.validationInstance.isFieldValid("nonExistentField");
+          return window.validationInstance.isFieldValid('nonExistentField');
         });
       } catch (error) {
         expect(error).toBeTruthy();
@@ -162,23 +171,27 @@ test.describe('Validation Methods', () => {
 });
 
 test.describe('Rule Management Methods', () => {
-  
-
   test.describe('#addMethod', async () => {
-    test('should successfully add a custom validation method', async ({ page }) => {
+    test('should successfully add a custom validation method', async ({
+      page,
+    }) => {
       page.evaluate(() => {
-        window.validationInstance.addMethod('startsWithA', (_, value) => {
-          return value.startsWith('a');
-        }, 'Email must start with the letter "a"');
-        
+        window.validationInstance.addMethod(
+          'startsWithA',
+          (_, value) => {
+            return value.startsWith('a');
+          },
+          'Email must start with the letter "a"'
+        );
+
         window.validationInstance.addFieldRule('email', 'startsWithA');
       });
-  
+
       const emailInput = await page.$('#email');
-      await emailInput?.fill("a@gmail.com");
+      await emailInput?.fill('a@gmail.com');
 
       const isValid = await page.evaluate(() => {
-        return window.validationInstance.isFieldValid("email");
+        return window.validationInstance.isFieldValid('email');
       });
 
       expect(isValid).toBe(true);
@@ -186,36 +199,42 @@ test.describe('Rule Management Methods', () => {
 
     test('should modify a method if it already exists', async ({ page }) => {
       page.evaluate(() => {
-        window.validationInstance.addMethod('validEmail', (_, value) => {
-          return value.startsWith('a');
-        }, "Email must start with the letter 'a'");
+        window.validationInstance.addMethod(
+          'validEmail',
+          (_, value) => {
+            return value.startsWith('a');
+          },
+          "Email must start with the letter 'a'"
+        );
 
         window.validationInstance.addFieldRule('email', 'validEmail');
       });
 
       const emailInput = await page.$('#email');
-      await emailInput?.fill("a");
+      await emailInput?.fill('a');
 
       const isValid = await page.evaluate(() => {
-        return window.validationInstance.isFieldValid("email");
+        return window.validationInstance.isFieldValid('email');
       });
 
       expect(isValid).toBe(true);
-
     });
   });
 
   test.describe('#setFieldRules', () => {
     test('should set the rules for a field', async ({ page }) => {
       page.evaluate(() => {
-        window.validationInstance.setFieldRules('age', ['numbersOnly', 'required']);
+        window.validationInstance.setFieldRules('age', [
+          'numbersOnly',
+          'required',
+        ]);
       });
 
       const nameInput = await page.$('#age');
       await nameInput?.fill('26');
 
       const isValid = await page.evaluate(() => {
-        return window.validationInstance.isFieldValid("age");
+        return window.validationInstance.isFieldValid('age');
       });
 
       expect(isValid).toBe(true);
@@ -232,7 +251,7 @@ test.describe('Rule Management Methods', () => {
       await nameInput?.fill('26');
 
       const isValid = await page.evaluate(() => {
-        return window.validationInstance.isFieldValid("age");
+        return window.validationInstance.isFieldValid('age');
       });
 
       expect(isValid).toBe(true);
@@ -249,16 +268,21 @@ test.describe('Rule Management Methods', () => {
       await emailInput?.fill('invalid-email');
 
       const isValid = await page.evaluate(() => {
-        return window.validationInstance.isFieldValid("email");
+        return window.validationInstance.isFieldValid('email');
       });
 
       expect(isValid).toBe(true);
     });
 
-    test('should throw an error if the field does not exist', async ({ page }) => {
+    test('should throw an error if the field does not exist', async ({
+      page,
+    }) => {
       try {
         await page.evaluate(() => {
-          window.validationInstance.removeFieldRule('nonExistentField', 'validEmail');
+          window.validationInstance.removeFieldRule(
+            'nonExistentField',
+            'validEmail'
+          );
         });
       } catch (error) {
         expect(error).toBeTruthy();
@@ -278,7 +302,7 @@ test.describe('Form Configuration Methods', () => {
           },
           optional: false,
           inputContainer: '#age',
-          errorPlacement: ()=>{},
+          errorPlacement: () => {},
         });
       });
 
@@ -286,7 +310,7 @@ test.describe('Form Configuration Methods', () => {
       await nameInput?.fill('26');
 
       const isValid = await page.evaluate(() => {
-        return window.validationInstance.isFieldValid("age");
+        return window.validationInstance.isFieldValid('age');
       });
 
       expect(isValid).toBe(true);
@@ -299,8 +323,7 @@ test.describe('Form Utility Methods', () => {
     test('should clone a validation object', async ({ page }) => {
       const clonedInstance = await page.evaluate(() => {
         return window.validationInstance.cloneDeep({
-          submitCallback: () => {
-          },
+          submitCallback: () => {},
           fields: {
             name: {
               rules: ['required'],
@@ -315,5 +338,4 @@ test.describe('Form Utility Methods', () => {
       expect(clonedInstance).toBeTruthy();
     });
   });
-})
-
+});

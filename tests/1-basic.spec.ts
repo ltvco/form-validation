@@ -5,7 +5,7 @@ Basic configuration testing
 */
 
 import { test, expect } from '@playwright/test';
-import { Validation } from '../src/index'
+import { Validation } from '../src/index';
 
 // Extend the window object to include the Validation class
 declare global {
