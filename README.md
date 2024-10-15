@@ -12,7 +12,7 @@ The `FormValidation.js` is a JavaScript form validation class that provides a fl
 - Support for form submission handling with validation.
 - Manual validation of the entire form or specific fields.
 
-***Note:*** *This library is not a replacement for server-side validation. It is intended to be used as a client-side validation tool to provide a better user experience and reduce the number of requests to the server.*
+**_Note:_** _This library is not a replacement for server-side validation. It is intended to be used as a client-side validation tool to provide a better user experience and reduce the number of requests to the server._
 
 ## How to use it
 
@@ -59,8 +59,8 @@ You can add custom validation rules by passing them as the third parameter in th
 ```javascript
 const myRules = {
   customRule: {
-    validator: (field) => field.value.length > 5,  // Custom validation function
-    message: 'This field must have more than 5 characters',  // Custom error message
+    validator: (field) => field.value.length > 5, // Custom validation function
+    message: 'This field must have more than 5 characters', // Custom error message
   },
 };
 ```
@@ -80,7 +80,11 @@ And that's it, the form validation is now ready! Now there are a few other thing
 You can also add or modify rules after initialization using the `addMethod` function:
 
 ```javascript
-myValidation.addMethod('customRule2', (field) => field.value !== '', 'This field cannot be empty');
+myValidation.addMethod(
+  'customRule2',
+  (field) => field.value !== '',
+  'This field cannot be empty'
+);
 ```
 
 If the rule already exists, you can also modify either the default message or the validation function.
@@ -104,7 +108,11 @@ The component provides a way to change the rules a field has in case there's som
 **Add a rule to a field**
 
 ```javascript
-myValidation.addFieldRule('fieldName', 'customRule', 'This is a custom error message for customRule');
+myValidation.addFieldRule(
+  'fieldName',
+  'customRule',
+  'This is a custom error message for customRule'
+);
 ```
 
 **Remove a rule to a field**
@@ -167,35 +175,35 @@ const isFieldValid = myValidation.isFieldValid('myField');
       - Origin is your fork.
       - Upstream is the original repository.
 
-***
+---
 
 ## API
 
 ### Constructor
 
 ```javascript
-constructor(form, config, rules)
+constructor(form, config, rules);
 ```
 
 #### Parameters
 
 - **`form`** `{HTMLElement | string}`: Form element or selector that will be validated.
-- **`config`** `{Object}`: *[Optional]* Object containing fields to validate, which rules to apply, and other configurations.
-- **`rules`** `{Object}`: *[Optional]* Custom rules to use in validation.
+- **`config`** `{Object}`: _[Optional]_ Object containing fields to validate, which rules to apply, and other configurations.
+- **`rules`** `{Object}`: _[Optional]_ Custom rules to use in validation.
 
-***
+---
 
 #### Returns
 
 An instance with the validation.
 
-***
+---
 
 #### Description
 
 Sets up all variables and configurations for validation to work on a form.
 
-***
+---
 
 #### Configuration
 
@@ -221,7 +229,7 @@ const config = {
 }
 ```
 
-***
+---
 
 ##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">`validationFlags`</span>
 
@@ -229,18 +237,17 @@ Array with triggers that define when will the validator check for the validity o
 
 **Available Flags**
 
-| Flag | Description |
-| --- | ------ |
-| `onChange` | **[Default]** Validates a field when the `change` event is triggered.  |
-| `onKeyUpAfterChange` | **[Default]** Works the same as the `onKeyUp` flag, however, it's added after the first time the field is changed. |
-| `onSubmit` | **[Default]** Validates all fields before the form is submitted. |
-| `onKeyUp` | Validates a field when the `keyup` event is triggered on the field. This is only added to inputs that can be written on. (`text`, `date`, etc.) |
+| Flag                 | Description                                                                                                                                     |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onChange`           | **[Default]** Validates a field when the `change` event is triggered.                                                                           |
+| `onKeyUpAfterChange` | **[Default]** Works the same as the `onKeyUp` flag, however, it's added after the first time the field is changed.                              |
+| `onSubmit`           | **[Default]** Validates all fields before the form is submitted.                                                                                |
+| `onKeyUp`            | Validates a field when the `keyup` event is triggered on the field. This is only added to inputs that can be written on. (`text`, `date`, etc.) |
 
 **Default Value**
 
 ```javascript
-
-  validationFlags: ['onChange', 'onKeyUpAfterChange', 'onSubmit']
+validationFlags: ['onChange', 'onKeyUpAfterChange', 'onSubmit'];
 ```
 
 **Usage**
@@ -253,7 +260,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">`submitCallback`</span>
 
@@ -261,15 +268,15 @@ Function to be called when the form is submitted successfully. It's important to
 
 **Available Parameters**
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `formObject` | `Object` | An object containing all the key-value pairs of each of the inputs. The field's `name` will be the key and the `value` will be whatever the user set as input. |
-| `form` | `HTMLFormElement` | The reference to the form `element` where the validation is being applied. |
+| Parameter    | Type              | Description                                                                                                                                                    |
+| ------------ | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `formObject` | `Object`          | An object containing all the key-value pairs of each of the inputs. The field's `name` will be the key and the `value` will be whatever the user set as input. |
+| `form`       | `HTMLFormElement` | The reference to the form `element` where the validation is being applied.                                                                                     |
 
 **Default Value**
 
 ```javascript
-  submitCallback: (formObj, form) => form.submit();
+submitCallback: (formObj, form) => form.submit();
 ```
 
 **Usage**
@@ -294,7 +301,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">`invalidHandler`</span>
 
@@ -302,15 +309,15 @@ Function to be called when the form is submitted with errors.
 
 **Available Parameters**
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `errors` | `Array<[HTMLElement, string]>` | An array containing all the errors found inside the form. Each element of the array is a tuple with the `input` as an `HTMLElement` and the `errorMessage` as a `string`. |
-| `form` | `HTMLFormElement` | The reference to the form `element` where the validation is being applied. |
+| Parameter | Type                           | Description                                                                                                                                                               |
+| --------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `errors`  | `Array<[HTMLElement, string]>` | An array containing all the errors found inside the form. Each element of the array is a tuple with the `input` as an `HTMLElement` and the `errorMessage` as a `string`. |
+| `form`    | `HTMLFormElement`              | The reference to the form `element` where the validation is being applied.                                                                                                |
 
 **Default Value**
 
 ```javascript
-  invalidHandler: () => {};
+invalidHandler: () => {};
 ```
 
 **Usage**
@@ -333,7 +340,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">`fields`</span>
 
@@ -372,7 +379,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`rules`</span>
 
@@ -394,7 +401,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`messages`</span>
 
@@ -425,7 +432,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`optional`</span>
 
@@ -462,7 +469,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`inputContainer`</span>
 
@@ -486,7 +493,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`errorPlacement`</span>
 
@@ -494,12 +501,12 @@ Function to be called when the error element is created. The function receives t
 
 **Available Parameters**
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `input` | `HTMLElement` | The reference to the `input` element that throws the error. |
-| `errorElement` | `HTMLElement` | An `HTMLElement` with the error message that has yet to be added to the DOM. |
-| `inputContainer` | `HTMLElement` | The reference to the `inputContainer` element. |
-| `form` | `HTMLFormElement` | A reference to the `form` element where the validation is being applied. |
+| Parameter        | Type              | Description                                                                  |
+| ---------------- | ----------------- | ---------------------------------------------------------------------------- |
+| `input`          | `HTMLElement`     | The reference to the `input` element that throws the error.                  |
+| `errorElement`   | `HTMLElement`     | An `HTMLElement` with the error message that has yet to be added to the DOM. |
+| `inputContainer` | `HTMLElement`     | The reference to the `inputContainer` element.                               |
+| `form`           | `HTMLFormElement` | A reference to the `form` element where the validation is being applied.     |
 
 **Default Value:**
 
@@ -523,7 +530,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`errorClass`</span>
 
@@ -549,7 +556,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`errorTag`</span>
 
@@ -573,7 +580,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`validClass`</span>
 
@@ -599,7 +606,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`normalizer`</span>
 
@@ -607,11 +614,11 @@ This function serves the purpose of adjusting the value in any way before it's v
 
 **Available Parameters**
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `value` | `string` | The current `value` of the `input` to be normalized. |
-| `input` | `HTMLElement` | The reference to the `input` element. |
-| `form` | `HTMLFormElement` | A reference to the `form` element where the validation is being applied. |
+| Parameter | Type              | Description                                                              |
+| --------- | ----------------- | ------------------------------------------------------------------------ |
+| `value`   | `string`          | The current `value` of the `input` to be normalized.                     |
+| `input`   | `HTMLElement`     | The reference to the `input` element.                                    |
+| `form`    | `HTMLFormElement` | A reference to the `form` element where the validation is being applied. |
 
 **Default Value:**
 
@@ -635,7 +642,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`fieldErrorHandler`</span>
 
@@ -643,12 +650,12 @@ Function to be called when the field is validated and it has errors. There's 2 w
 
 **Available Parameters**
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `input` | `HTMLElement` | The reference to the `input` throwing the error. |
-| `message` | `string` | Error message to be displayed. |
-| `fieldConfig` | `Object` | An object with the config options that this field was initialized with. |
-| `form` | `HTMLFormElement` | A reference to the `form` element where the validation is being applied. |
+| Parameter     | Type              | Description                                                              |
+| ------------- | ----------------- | ------------------------------------------------------------------------ |
+| `input`       | `HTMLElement`     | The reference to the `input` throwing the error.                         |
+| `message`     | `string`          | Error message to be displayed.                                           |
+| `fieldConfig` | `Object`          | An object with the config options that this field was initialized with.  |
+| `form`        | `HTMLFormElement` | A reference to the `form` element where the validation is being applied. |
 
 **Default Functionality:**
 
@@ -715,7 +722,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`fieldValidHandler`</span>
 
@@ -723,11 +730,11 @@ Function to be called when the field is validated and it passes all the rules. S
 
 **Available Parameters**
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `input` | `HTMLElement` | The reference to the `input` element that passed validations. |
-| `fieldConfig` | `Object` | An object with the config options that this field was initialized with. |
-| `form` | `HTMLFormElement` | A reference to the `form` element where the validation is being applied. |
+| Parameter     | Type              | Description                                                              |
+| ------------- | ----------------- | ------------------------------------------------------------------------ |
+| `input`       | `HTMLElement`     | The reference to the `input` element that passed validations.            |
+| `fieldConfig` | `Object`          | An object with the config options that this field was initialized with.  |
+| `form`        | `HTMLFormElement` | A reference to the `form` element where the validation is being applied. |
 
 **Default Functionality:**
 
@@ -788,7 +795,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`fieldHandlerKeepFunctionality`</span>
 
@@ -823,7 +830,7 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">Dynamic Rules</span>
 
@@ -865,29 +872,29 @@ const myConfig = {
 }
 ```
 
-***
+---
 
 ##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">Default Rules</span>
 
 The validator comes with a predefined amount of rules ready to be used.
 
-| Name | Description | Error Message |
-| ---- | ----------- | ------------- |
-| `required` | Value must not be empty or contain only spaces | This field is required |
-| `notEmail` | Value must not be an email | Email addresses are not searchable here |
-| `validEmail` | Value must have a correct email format. | Please enter a valid email address in the format of `example@test.com` |
-| `noSpecialCharacters` | Value must not contain any of the following characters: `[$-/:-?{-~!"^_`[]` | Special characters are not allowed |
-| `noEmptySpacesOnly` | Value must not be just empty spaces | Empty spaces are not allowed |
-| `emptyOrLetters` | Value must either be empty or contain letters only | Alphabetic characters required |
-| `onlyAlphanumeric` | Value must be alphabetic characters only | Only alphanumeric values are allowed |
-| `phoneUS` | Value must have the structure of a common US phone | Please specify a valid phone number |
-| `numbersOnly` | Value must contain numeric values only | Only numeric values are allowed |
-| `lettersOnly` | Value must contain alphabetic values only | Only alphabetic characters are allowed |
-| `characterAmount` | Value's length must be between `min` and `max` | Please enter a minimum of `min` and a maximum of `max` characters |
-| `maxCharacterAmount` | Value's length must be a maximum of `max` characters | Please enter a maximum of `max` characters |
-| `minCharacterAmount` | Value's length must be at least `min` characters long | Please enter a minimum of `min` characters |
+| Name                  | Description                                                                 | Error Message                                                          |
+| --------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `required`            | Value must not be empty or contain only spaces                              | This field is required                                                 |
+| `notEmail`            | Value must not be an email                                                  | Email addresses are not searchable here                                |
+| `validEmail`          | Value must have a correct email format.                                     | Please enter a valid email address in the format of `example@test.com` |
+| `noSpecialCharacters` | Value must not contain any of the following characters: `[$-/:-?{-~!"^_`[]` | Special characters are not allowed                                     |
+| `noEmptySpacesOnly`   | Value must not be just empty spaces                                         | Empty spaces are not allowed                                           |
+| `emptyOrLetters`      | Value must either be empty or contain letters only                          | Alphabetic characters required                                         |
+| `onlyAlphanumeric`    | Value must be alphabetic characters only                                    | Only alphanumeric values are allowed                                   |
+| `phoneUS`             | Value must have the structure of a common US phone                          | Please specify a valid phone number                                    |
+| `numbersOnly`         | Value must contain numeric values only                                      | Only numeric values are allowed                                        |
+| `lettersOnly`         | Value must contain alphabetic values only                                   | Only alphabetic characters are allowed                                 |
+| `characterAmount`     | Value's length must be between `min` and `max`                              | Please enter a minimum of `min` and a maximum of `max` characters      |
+| `maxCharacterAmount`  | Value's length must be a maximum of `max` characters                        | Please enter a maximum of `max` characters                             |
+| `minCharacterAmount`  | Value's length must be at least `min` characters long                       | Please enter a minimum of `min` characters                             |
 
-***
+---
 
 ### Public Methods
 
@@ -908,7 +915,7 @@ if (myValidation.isValid()) {
 }
 ```
 
-***
+---
 
 #### `validateForm(silently)`
 
@@ -916,9 +923,9 @@ This function forces all the fields to be validated. A flag can be passed to dis
 
 **Parameters**
 
-| Parameter | Type | Default | Description |
-| --------- | ---- | ------- | ----------- |
-| `silently` | `boolean` | `true` | *[Optional]* If the value is true, error messages won't be displayed, false means they will be displayed. |
+| Parameter  | Type      | Default | Description                                                                                               |
+| ---------- | --------- | ------- | --------------------------------------------------------------------------------------------------------- |
+| `silently` | `boolean` | `true`  | _[Optional]_ If the value is true, error messages won't be displayed, false means they will be displayed. |
 
 **Returns**
 `boolean`: `True` if all the fields are valid, `false` otherwise.
@@ -929,7 +936,7 @@ This function forces all the fields to be validated. A flag can be passed to dis
 const isFormValid = myValidation.validateForm();
 ```
 
-***
+---
 
 #### `isFieldValid(field, silently)`
 
@@ -937,10 +944,10 @@ This function forces a specific field to be validated. A flag can be passed to d
 
 **Parameters**
 
-| Parameter | Type | Default | Description |
-| --------- | ---- | ------- | ----------- |
-| `field` | `HTMLElement | string` | | *[Required]* The field to validate. Can be either an `HTMLElement` or a `string` with the name of the field. |
-| `silently` | `boolean` | `true` | *[Optional]* If the value is true, error messages won't be displayed, false means they will be displayed. |
+| Parameter  | Type         | Default | Description                                                                                               |
+| ---------- | ------------ | ------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `field`    | `HTMLElement | string` |                                                                                                           | _[Required]_ The field to validate. Can be either an `HTMLElement` or a `string` with the name of the field. |
+| `silently` | `boolean`    | `true`  | _[Optional]_ If the value is true, error messages won't be displayed, false means they will be displayed. |
 
 **Returns**
 `boolean`: `True` if the field is valid, `false` otherwise.
@@ -951,7 +958,7 @@ This function forces a specific field to be validated. A flag can be passed to d
 const isFieldValid = myValidation.isFieldValid('myField');
 ```
 
-***
+---
 
 #### `addMethod(name, validator, message)`
 
@@ -959,19 +966,23 @@ This function adds a new validation rule or modifies an existing one. If you pas
 
 **Parameters**
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `name` | `string` | *[Required]* The name of the validation rule. |
-| `validator` | `Function` | *[Required]* The function that validates the field. |
-| `message` | `string` | *[Required]* The message that will be displayed when the field is invalid. |
+| Parameter   | Type       | Description                                                                |
+| ----------- | ---------- | -------------------------------------------------------------------------- |
+| `name`      | `string`   | _[Required]_ The name of the validation rule.                              |
+| `validator` | `Function` | _[Required]_ The function that validates the field.                        |
+| `message`   | `string`   | _[Required]_ The message that will be displayed when the field is invalid. |
 
 **Usage**
 
 ```javascript
-myValidation.addMethod('customRule2', (field) => field.value !== '', 'This field cannot be empty');
+myValidation.addMethod(
+  'customRule2',
+  (field) => field.value !== '',
+  'This field cannot be empty'
+);
 ```
 
-***
+---
 
 #### `setFieldRules(fieldName, rules, messages)`
 
@@ -979,11 +990,11 @@ This function sets the validation rules for a specific field. If the field alrea
 
 **Parameters**
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `fieldName` | `string` | *[Required]* The name of the field. |
-| `rules` | `Array<string>` | *[Required]* An array of strings, where each string is the name of the validation rule. |
-| `messages` | `Object` | *[Required]* An object that defines the custom messages for each validation rule. |
+| Parameter   | Type            | Description                                                                             |
+| ----------- | --------------- | --------------------------------------------------------------------------------------- |
+| `fieldName` | `string`        | _[Required]_ The name of the field.                                                     |
+| `rules`     | `Array<string>` | _[Required]_ An array of strings, where each string is the name of the validation rule. |
+| `messages`  | `Object`        | _[Required]_ An object that defines the custom messages for each validation rule.       |
 
 **Usage**
 
@@ -994,7 +1005,7 @@ myValidation.setFieldRules('fieldName', ['customRule', 'customRule2'], {
 });
 ```
 
-***
+---
 
 #### `addFieldRule(fieldName, ruleName, message)`
 
@@ -1002,19 +1013,23 @@ This function adds a validation rule to a specific field. If the field already h
 
 **Parameters**
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `fieldName` | `string` | *[Required]* The name of the field. |
-| `ruleName` | `string` | *[Required]* The name of the validation rule. |
-| `message` | `string` | *[Required]* The custom message for the validation rule. |
+| Parameter   | Type     | Description                                              |
+| ----------- | -------- | -------------------------------------------------------- |
+| `fieldName` | `string` | _[Required]_ The name of the field.                      |
+| `ruleName`  | `string` | _[Required]_ The name of the validation rule.            |
+| `message`   | `string` | _[Required]_ The custom message for the validation rule. |
 
 **Usage**
 
 ```javascript
-myValidation.addFieldRule('fieldName', 'customRule3', 'This is a custom error message for customRule3');
+myValidation.addFieldRule(
+  'fieldName',
+  'customRule3',
+  'This is a custom error message for customRule3'
+);
 ```
 
-***
+---
 
 #### `removeFieldRule(fieldName, ruleName)`
 
@@ -1022,10 +1037,10 @@ This function removes a validation rule from a specific field.
 
 **Parameters**
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `fieldName` | `string` | *[Required]* The name of the field. |
-| `ruleName` | `string` | *[Required]* The name of the validation rule. |
+| Parameter   | Type     | Description                                   |
+| ----------- | -------- | --------------------------------------------- |
+| `fieldName` | `string` | _[Required]_ The name of the field.           |
+| `ruleName`  | `string` | _[Required]_ The name of the validation rule. |
 
 **Returns**
 `boolean`: `True` if the rule was removed successfully, `false` otherwise.
