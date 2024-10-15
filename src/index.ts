@@ -1,6 +1,34 @@
 import validatorRules from './rules';
-import { Config, Flag, FormValidation, Message, FieldConfig, Rules, ValidatorInput, RuleValidator, FormDataObject, MessageFunction, PreprocessedMessages, ParamConfig } from './types';
-const WRITEABLE_INPUTS = ['text', 'password', 'textarea', 'email', 'number', 'search', 'tel', 'url', 'date', 'month', 'week', 'time', 'datetime', 'datetime-local'];
+import {
+  Config,
+  Flag,
+  FormValidation,
+  Message,
+  FieldConfig,
+  Rules,
+  ValidatorInput,
+  RuleValidator,
+  FormDataObject,
+  MessageFunction,
+  PreprocessedMessages,
+  ParamConfig,
+} from './types';
+const WRITEABLE_INPUTS = [
+  'text',
+  'password',
+  'textarea',
+  'email',
+  'number',
+  'search',
+  'tel',
+  'url',
+  'date',
+  'month',
+  'week',
+  'time',
+  'datetime',
+  'datetime-local',
+];
 
 /** Validate Form Class **/
 export class Validation implements FormValidation {
@@ -12,7 +40,11 @@ export class Validation implements FormValidation {
   };
   private fieldsToValidate: Array<ValidatorInput> = [];
   private config: Config = {
-    validationFlags: ['onSubmit', 'onChange', 'onKeyUpAfterChange'] as Array<Flag>,
+    validationFlags: [
+      'onSubmit',
+      'onChange',
+      'onKeyUpAfterChange',
+    ] as Array<Flag>,
     submitCallback: this.defaultSubmit,
     invalidHandler: () => {
       /* Do nothing */
@@ -28,15 +60,25 @@ export class Validation implements FormValidation {
    * @param {Rules} [rules] Object containing custom rules to apply to the validation.
    * @returns {Validation} An instance with the validation.
    */
-  constructor(form: HTMLFormElement | string, config?: ParamConfig, rules?: Rules) {
+  constructor(
+    form: HTMLFormElement | string,
+    config?: ParamConfig,
+    rules?: Rules
+  ) {
     if (!form) throw new Error('A valid form element or selector is required.');
-    if (typeof form !== 'string' && !(form instanceof Node)) throw new Error('Form must be a string or a HTML Element.');
-    if (typeof form === 'string' && !document.querySelector(form)) throw new Error(`Form selector "${form}" not found.`);
+    if (typeof form !== 'string' && !(form instanceof Node))
+      throw new Error('Form must be a string or a HTML Element.');
+    if (typeof form === 'string' && !document.querySelector(form))
+      throw new Error(`Form selector "${form}" not found.`);
 
-    this.form = typeof form === 'string' ? (document.querySelector(form) as HTMLFormElement) : form;
+    this.form =
+      typeof form === 'string'
+        ? (document.querySelector(form) as HTMLFormElement)
+        : form;
 
     if (config) {
-      if (typeof config !== 'object') throw new Error('Config must be an object.');
+      if (typeof config !== 'object')
+        throw new Error('Config must be an object.');
       this.config = {
         ...this.config,
         ...this.cloneDeep(config),
@@ -44,10 +86,13 @@ export class Validation implements FormValidation {
     }
 
     if (rules && Object.keys(rules).length) {
-      if (typeof rules !== 'object') throw new Error('Rules must be an object.');
-      Object.keys(rules).forEach(rule => {
-        if (typeof rules[rule]?.validator !== 'function') throw new Error(`${rule} must be a function.`);
-        if (typeof rules[rule]?.message !== 'string') throw new Error(`${rule} message must be a string.`);
+      if (typeof rules !== 'object')
+        throw new Error('Rules must be an object.');
+      Object.keys(rules).forEach((rule) => {
+        if (typeof rules[rule]?.validator !== 'function')
+          throw new Error(`${rule} must be a function.`);
+        if (typeof rules[rule]?.message !== 'string')
+          throw new Error(`${rule} message must be a string.`);
 
         this.addMethod(rule, rules[rule].validator, rules[rule].message);
       });
@@ -112,7 +157,10 @@ export class Validation implements FormValidation {
         throw new Error('Error placement must be a function.');
       }
 
-      const inputContainerElement = typeof inputContainer === 'string' ? (field.closest(inputContainer) as HTMLElement) : inputContainer || (field.parentElement as HTMLElement);
+      const inputContainerElement =
+        typeof inputContainer === 'string'
+          ? (field.closest(inputContainer) as HTMLElement)
+          : inputContainer || (field.parentElement as HTMLElement);
       errorPlacement(field, errorElement, inputContainerElement, this.form);
     } else {
       const errorTarget = field.parentElement as HTMLElement;
@@ -126,7 +174,14 @@ export class Validation implements FormValidation {
    * @return {boolean} Flag to know if the field is visible or not.
    */
   private isFieldVisible(field: ValidatorInput): boolean {
-    return !!(field.offsetWidth || field.offsetHeight || field.getClientRects().length) && window.getComputedStyle(field as ValidatorInput).visibility !== 'hidden';
+    return (
+      !!(
+        field.offsetWidth ||
+        field.offsetHeight ||
+        field.getClientRects().length
+      ) &&
+      window.getComputedStyle(field as ValidatorInput).visibility !== 'hidden'
+    );
   }
 
   /**
@@ -135,21 +190,43 @@ export class Validation implements FormValidation {
    * @param {string} message - Error message
    * @param {FieldConfig} fieldConfig - Field configuration
    */
-  private onError(field: ValidatorInput, message: string, fieldConfig: FieldConfig) {
+  private onError(
+    field: ValidatorInput,
+    message: string,
+    fieldConfig: FieldConfig
+  ) {
     this.errors.push([field, message]);
-    const { optional, errorClass, inputContainer, validClass, fieldErrorHandler, fieldHandlerKeepFunctionality } = fieldConfig;
+    const {
+      optional,
+      errorClass,
+      inputContainer,
+      validClass,
+      fieldErrorHandler,
+      fieldHandlerKeepFunctionality,
+    } = fieldConfig;
     // If there's a custom fieldErrorHandler function, use it.
     if (fieldErrorHandler && !fieldHandlerKeepFunctionality) {
-      if (typeof fieldErrorHandler !== 'function') throw new Error('"fieldErrorHandler" must be a function.');
+      if (typeof fieldErrorHandler !== 'function')
+        throw new Error('"fieldErrorHandler" must be a function.');
       fieldErrorHandler(field, message, fieldConfig, this.form);
     } else {
       // If there's no error element yet, create it.
-      if (!this.form.querySelector(`.${field.name.replace(/\[/g, '-').replace(/\]/g, '')}-error-element`)) this.createError(field, fieldConfig);
+      if (
+        !this.form.querySelector(
+          `.${field.name.replace(/\[/g, '-').replace(/\]/g, '')}-error-element`
+        )
+      )
+        this.createError(field, fieldConfig);
 
-      const inputParent = typeof inputContainer === 'string' ? (field.closest(inputContainer) as HTMLElement) : inputContainer || (field.parentElement as HTMLElement);
+      const inputParent =
+        typeof inputContainer === 'string'
+          ? (field.closest(inputContainer) as HTMLElement)
+          : inputContainer || (field.parentElement as HTMLElement);
 
       if ((optional && field.value) || !optional) {
-        const errorElement = this.form.querySelector(`.${field.name.replace(/\[/g, '-').replace(/\]/g, '')}-error-element`) as HTMLElement;
+        const errorElement = this.form.querySelector(
+          `.${field.name.replace(/\[/g, '-').replace(/\]/g, '')}-error-element`
+        ) as HTMLElement;
 
         errorElement.innerHTML = message;
         errorElement.style.display = 'block';
@@ -163,7 +240,8 @@ export class Validation implements FormValidation {
       field.classList.remove('valid');
 
       if (fieldErrorHandler && fieldHandlerKeepFunctionality) {
-        if (typeof fieldErrorHandler !== 'function') throw new Error('"fieldErrorHandler" must be a function.');
+        if (typeof fieldErrorHandler !== 'function')
+          throw new Error('"fieldErrorHandler" must be a function.');
         fieldErrorHandler(field, message, fieldConfig, this.form);
       }
     }
@@ -175,16 +253,29 @@ export class Validation implements FormValidation {
    * @param {FieldConfig} fieldConfig - Field configuration
    */
   private onValid(field: ValidatorInput, fieldConfig: FieldConfig) {
-    const { optional, errorClass, inputContainer, validClass, fieldValidHandler, fieldHandlerKeepFunctionality } = fieldConfig;
+    const {
+      optional,
+      errorClass,
+      inputContainer,
+      validClass,
+      fieldValidHandler,
+      fieldHandlerKeepFunctionality,
+    } = fieldConfig;
     this.errors = this.errors.filter(([errorField]) => errorField !== field);
 
     // If there's a custom fieldValidHandler function, use it.
     if (fieldValidHandler && !fieldHandlerKeepFunctionality) {
-      if (typeof fieldValidHandler !== 'function') throw new Error('"fieldValidHandler" must be a function.');
+      if (typeof fieldValidHandler !== 'function')
+        throw new Error('"fieldValidHandler" must be a function.');
       fieldValidHandler(field, fieldConfig, this.form);
     } else {
-      const inputParent = typeof inputContainer === 'string' ? (field.closest(inputContainer) as HTMLElement) : inputContainer || (field.parentElement as HTMLElement);
-      const errorElement = this.form.querySelector(`.${field.name.replace(/\[/g, '-').replace(/\]/g, '')}-error-element`) as HTMLElement;
+      const inputParent =
+        typeof inputContainer === 'string'
+          ? (field.closest(inputContainer) as HTMLElement)
+          : inputContainer || (field.parentElement as HTMLElement);
+      const errorElement = this.form.querySelector(
+        `.${field.name.replace(/\[/g, '-').replace(/\]/g, '')}-error-element`
+      ) as HTMLElement;
 
       inputParent.classList.remove(errorClass || 'error');
       field.classList.remove('error');
@@ -200,7 +291,8 @@ export class Validation implements FormValidation {
       }
 
       if (fieldValidHandler && fieldHandlerKeepFunctionality) {
-        if (typeof fieldValidHandler !== 'function') throw new Error('"fieldValidHandler" must be a function.');
+        if (typeof fieldValidHandler !== 'function')
+          throw new Error('"fieldValidHandler" must be a function.');
         fieldValidHandler(field, fieldConfig, this.form);
       }
     }
@@ -212,7 +304,10 @@ export class Validation implements FormValidation {
    * @param {Boolean} silently If the flag is true, the method will not add the error to the field.
    * @returns {[ ValidatorInput, string ] | null} - Returns an array with the field and the error message or null if the field has no errors.
    */
-  private validateField(field: ValidatorInput, silently = false): [ValidatorInput, string] | null {
+  private validateField(
+    field: ValidatorInput,
+    silently = false
+  ): [ValidatorInput, string] | null {
     const fieldConfig = this.config.fields[field.name];
     const { rules, messages, optional } = fieldConfig;
 
@@ -222,7 +317,7 @@ export class Validation implements FormValidation {
     }
 
     if (rules.length) {
-      const errorRule = rules.find(rule => {
+      const errorRule = rules.find((rule) => {
         const value = field.value.trim();
         const hasParams = rule.split('(').length > 1;
 
@@ -239,7 +334,8 @@ export class Validation implements FormValidation {
       if (errorRule) {
         const errorMessage = messages[errorRule];
 
-        if (!silently) this.onError(field, errorMessage, this.config.fields[field.name]);
+        if (!silently)
+          this.onError(field, errorMessage, this.config.fields[field.name]);
         return [field, errorMessage];
       } else {
         this.onValid(field, this.config.fields[field.name]);
@@ -259,7 +355,7 @@ export class Validation implements FormValidation {
     const errors: Array<[ValidatorInput, string]> = [];
     const errorSelector: Array<string> = [];
 
-    this.fieldsToValidate.filter(this.isFieldVisible).map(field => {
+    this.fieldsToValidate.filter(this.isFieldVisible).map((field) => {
       const error = this.validateField(field, silently);
       const hasOnKeyUp = field.validator.hasOnKeyUp;
 
@@ -269,7 +365,11 @@ export class Validation implements FormValidation {
       }
 
       // Add "keyup" event only if field doesn't have it yet.
-      if (!hasOnKeyUp && this.config.validationFlags.includes('onKeyUpAfterChange') && WRITEABLE_INPUTS.includes(field.type)) {
+      if (
+        !hasOnKeyUp &&
+        this.config.validationFlags.includes('onKeyUpAfterChange') &&
+        WRITEABLE_INPUTS.includes(field.type)
+      ) {
         field.addEventListener('keyup', this.onChange.bind(this));
         field.validator.hasOnKeyUp = true;
       }
@@ -289,7 +389,9 @@ export class Validation implements FormValidation {
     const { errors, errorSelector } = this.validateAllVisibleFields(silently);
 
     if (errors.length) {
-      const firstField = this.form.querySelector(errorSelector.join(',')) as HTMLElement;
+      const firstField = this.form.querySelector(
+        errorSelector.join(',')
+      ) as HTMLElement;
       firstField.focus();
 
       this.config.invalidHandler(errors, this.form);
@@ -306,9 +408,14 @@ export class Validation implements FormValidation {
     const formData = new FormData(this.form);
 
     for (const key of formData.keys()) {
-      const field = this.form.querySelector(`[name="${key}"]`) as ValidatorInput;
+      const field = this.form.querySelector(
+        `[name="${key}"]`
+      ) as ValidatorInput;
 
-      if (this.isFieldVisible(field)) data[key] = this.sanitizeInput(formData.get(key)?.toString().trim() as string);
+      if (this.isFieldVisible(field))
+        data[key] = this.sanitizeInput(
+          formData.get(key)?.toString().trim() as string
+        );
     }
 
     this.config.submitCallback(data, this.form);
@@ -319,7 +426,7 @@ export class Validation implements FormValidation {
    * sanitize all inputs and submit the form.
    */
   private defaultSubmit() {
-    this.fieldsToValidate.filter(this.isFieldVisible).map(field => {
+    this.fieldsToValidate.filter(this.isFieldVisible).map((field) => {
       field.value = this.sanitizeInput(field.value);
     });
 
@@ -337,7 +444,11 @@ export class Validation implements FormValidation {
 
     this.validateField(field);
 
-    if (!hasOnKeyUp && validationFlags.includes('onKeyUpAfterChange') && WRITEABLE_INPUTS.includes(field.type)) {
+    if (
+      !hasOnKeyUp &&
+      validationFlags.includes('onKeyUpAfterChange') &&
+      WRITEABLE_INPUTS.includes(field.type)
+    ) {
       field.addEventListener('keyup', this.onChange.bind(this));
       field.validator.hasOnKeyUp = true;
     }
@@ -351,7 +462,11 @@ export class Validation implements FormValidation {
    * @param {string[]} args - Parameters to be passed to the message function.
    * @returns {string} - The message returned by the message function.
    */
-  private setupFunctionMessage(field: ValidatorInput, rule: string, message: MessageFunction): string {
+  private setupFunctionMessage(
+    field: ValidatorInput,
+    rule: string,
+    message: MessageFunction
+  ): string {
     const hasParams = rule.includes('(');
     const params = hasParams ? rule.split('(')[1].split(')')[0].split(',') : [];
 
@@ -365,27 +480,40 @@ export class Validation implements FormValidation {
    * @param {Array<string>} rules - Array of rules to add to the field
    * @param {ProcessedMessages} [messages] - Object with custom messages for each rule
    */
-  private setupFieldConfig(fieldName: string, rules: FieldConfig['rules'], messages?: FieldConfig['messages']) {
-    const field = this.form.querySelector(`[name="${fieldName}"]`) as ValidatorInput;
+  private setupFieldConfig(
+    fieldName: string,
+    rules: FieldConfig['rules'],
+    messages?: FieldConfig['messages']
+  ) {
+    const field = this.form.querySelector(
+      `[name="${fieldName}"]`
+    ) as ValidatorInput;
     if (!field) throw new Error(`Field ${fieldName} was not found in the form`);
     if (!rules) throw new Error('Rules cannot be empty');
     if (!Array.isArray(rules)) throw new Error('Rules must be an array');
-    if (messages && typeof messages !== 'object') throw new Error('Messages must be an object');
+    if (messages && typeof messages !== 'object')
+      throw new Error('Messages must be an object');
 
     this.config.fields[fieldName] = {
       ...{
         rules,
         messages: messages || {},
         inputContainer: field.parentElement as HTMLElement,
-        errorPlacement: (element, errorElement) => element.parentElement!.appendChild(errorElement),
+        errorPlacement: (element, errorElement) =>
+          element.parentElement!.appendChild(errorElement),
         optional: !rules.includes('required'),
       },
       ...this.config.fields[fieldName],
     };
 
     if (typeof this.config.fields[fieldName].inputContainer === 'string') {
-      const inputContainerElement = field.closest(this.config.fields[fieldName].inputContainer as string) as HTMLElement;
-      if (!inputContainerElement) throw new Error(`Input container "${inputContainerElement}" not found.`);
+      const inputContainerElement = field.closest(
+        this.config.fields[fieldName].inputContainer as string
+      ) as HTMLElement;
+      if (!inputContainerElement)
+        throw new Error(
+          `Input container "${inputContainerElement}" not found.`
+        );
       this.config.fields[fieldName].inputContainer = inputContainerElement;
     }
 
@@ -396,15 +524,25 @@ export class Validation implements FormValidation {
 
     const { inputContainer, optional } = this.config.fields[fieldName];
     if (inputContainer && typeof inputContainer === 'string') {
-      const inputContainerElement = field.closest(inputContainer) as unknown as HTMLElement;
+      const inputContainerElement = field.closest(
+        inputContainer
+      ) as unknown as HTMLElement;
 
-      if (!inputContainerElement) throw new Error(`Input container "${inputContainerElement}" not found.`);
+      if (!inputContainerElement)
+        throw new Error(
+          `Input container "${inputContainerElement}" not found.`
+        );
       this.config.fields[fieldName].inputContainer = inputContainerElement;
-    } else if (inputContainer && inputContainer instanceof HTMLElement && !inputContainer.contains(field)) {
+    } else if (
+      inputContainer &&
+      inputContainer instanceof HTMLElement &&
+      !inputContainer.contains(field)
+    ) {
       throw new Error('Input container must contain the field.');
     }
 
-    if (!optional && !rules.includes('required')) this.addFieldRule(fieldName, 'required');
+    if (!optional && !rules.includes('required'))
+      this.addFieldRule(fieldName, 'required');
   }
 
   /**
@@ -413,15 +551,21 @@ export class Validation implements FormValidation {
    */
   private setupConfig() {
     // Each key in the config is a field's name
-    Object.keys(this.config.fields).forEach(fieldName => {
+    Object.keys(this.config.fields).forEach((fieldName) => {
       const { rules, messages } = this.config.fields[fieldName];
       this.setupFieldConfig(fieldName, rules, messages);
     });
 
     // If there were any other inputs inside the form with the "required" attribute,
     // add the "required" rule to them.
-    const requiredFields = [...(this.form.querySelectorAll('[required]') as NodeListOf<ValidatorInput>)].map((field: ValidatorInput) => field.name).filter(name => !this.config.fields[name]);
-    requiredFields.forEach(fieldName => {
+    const requiredFields = [
+      ...(this.form.querySelectorAll(
+        '[required]'
+      ) as NodeListOf<ValidatorInput>),
+    ]
+      .map((field: ValidatorInput) => field.name)
+      .filter((name) => !this.config.fields[name]);
+    requiredFields.forEach((fieldName) => {
       this.setupFieldConfig(fieldName, ['required']);
     });
   }
@@ -455,11 +599,14 @@ export class Validation implements FormValidation {
   isFieldValid(field: ValidatorInput | string, silently = true): boolean {
     if (!field) throw new Error('Field cannot be empty');
 
-    if (typeof field === 'string') field = this.form.querySelector(`[name="${field}"]`) as ValidatorInput;
+    if (typeof field === 'string')
+      field = this.form.querySelector(`[name="${field}"]`) as ValidatorInput;
     if (!field) throw new Error(`Field "${field}" does not exist`);
-    else if (!(field instanceof Node)) throw new Error('Field must be a string or an HTML element');
+    else if (!(field instanceof Node))
+      throw new Error('Field must be a string or an HTML element');
 
-    if (!this.fieldsToValidate.includes(field)) throw new Error(`Field "${field.name}" is not being validated`);
+    if (!this.fieldsToValidate.includes(field))
+      throw new Error(`Field "${field.name}" is not being validated`);
 
     return !!!this.validateField(field, silently);
   }
@@ -471,9 +618,11 @@ export class Validation implements FormValidation {
    * @param {Message} [message] - Message to be displayed when the field is invalid
    */
   addMethod(name: string, validator?: RuleValidator, message?: Message) {
-    if (!name || typeof name !== 'string') throw new Error('Name must be a string');
+    if (!name || typeof name !== 'string')
+      throw new Error('Name must be a string');
     if (this.rules[name]) {
-      const { validator: currentValidator, message: currentMessage } = this.rules[name];
+      const { validator: currentValidator, message: currentMessage } =
+        this.rules[name];
       this.rules[name] = {
         validator: validator || currentValidator,
         message: message || currentMessage,
@@ -481,8 +630,12 @@ export class Validation implements FormValidation {
     } else {
       if (!validator) throw new Error('Validator cannot be empty');
       if (!message) throw new Error('Message cannot be empty');
-      if (typeof validator !== 'function') throw new Error('Validator must be a function');
-      if (typeof message !== 'function' && typeof message !== 'string') throw new Error('Message must be a string or a function that resolves to a string');
+      if (typeof validator !== 'function')
+        throw new Error('Validator must be a function');
+      if (typeof message !== 'function' && typeof message !== 'string')
+        throw new Error(
+          'Message must be a string or a function that resolves to a string'
+        );
 
       this.rules[name] = { validator, message };
     }
@@ -494,11 +647,19 @@ export class Validation implements FormValidation {
    * @param {Array<string>} [rules] - Array of rules to add to the field
    * @param {Messages} [messages] - Object with custom messages for each rule
    */
-  setFieldRules(fieldName: string, rules?: Array<string>, messages?: PreprocessedMessages) {
-    const field = this.form.querySelector(`[name="${fieldName}"]`) as ValidatorInput;
+  setFieldRules(
+    fieldName: string,
+    rules?: Array<string>,
+    messages?: PreprocessedMessages
+  ) {
+    const field = this.form.querySelector(
+      `[name="${fieldName}"]`
+    ) as ValidatorInput;
     if (!field) throw new Error(`Field ${fieldName} was not found in the form`);
 
-    rules?.forEach(rule => this.addFieldRule(fieldName, rule, messages?.[rule]));
+    rules?.forEach((rule) =>
+      this.addFieldRule(fieldName, rule, messages?.[rule])
+    );
   }
 
   /**
@@ -508,30 +669,41 @@ export class Validation implements FormValidation {
    * @param {string} [message] - Custom message for the rule
    */
   addFieldRule(fieldName: string, ruleName: string, message?: Message) {
-    const field = this.form.querySelector(`[name="${fieldName}"]`) as ValidatorInput;
+    const field = this.form.querySelector(
+      `[name="${fieldName}"]`
+    ) as ValidatorInput;
     if (!field) throw new Error(`Field ${fieldName} does not exist`);
 
-    if (!this.config.fields[fieldName]) this.setupFieldConfig(fieldName, [ruleName]);
+    if (!this.config.fields[fieldName])
+      this.setupFieldConfig(fieldName, [ruleName]);
     if (ruleName === 'required') this.config.fields[fieldName].optional = false;
 
     const { rules, normalizer } = this.config.fields[fieldName];
-    const ruleNoParams = ruleName.includes('(') ? ruleName.split('(')[0] : ruleName;
+    const ruleNoParams = ruleName.includes('(')
+      ? ruleName.split('(')[0]
+      : ruleName;
 
-    if (!this.rules[ruleNoParams]) throw new Error(`Rule ${ruleNoParams} does not exist`);
+    if (!this.rules[ruleNoParams])
+      throw new Error(`Rule ${ruleNoParams} does not exist`);
     else {
-      if (!rules.includes(ruleName)) this.config.fields[fieldName].rules = [...rules, ruleName];
+      if (!rules.includes(ruleName))
+        this.config.fields[fieldName].rules = [...rules, ruleName];
 
       let ruleMessage = message || this.rules[ruleNoParams].message;
-      if (typeof ruleMessage === 'function') ruleMessage = this.setupFunctionMessage(field, ruleName, ruleMessage);
+      if (typeof ruleMessage === 'function')
+        ruleMessage = this.setupFunctionMessage(field, ruleName, ruleMessage);
       this.config.fields[fieldName].messages[ruleName] = ruleMessage;
     }
 
     if (!this.fieldsToValidate.includes(field)) {
-      if (normalizer && typeof normalizer !== 'function') throw new Error('Normalizer must be a function.');
+      if (normalizer && typeof normalizer !== 'function')
+        throw new Error('Normalizer must be a function.');
       this.fieldsToValidate.push(field);
 
       const { validationFlags } = this.config;
-      const onChange = validationFlags.includes('onChange') || validationFlags.includes('onKeyUpAfterChange');
+      const onChange =
+        validationFlags.includes('onChange') ||
+        validationFlags.includes('onKeyUpAfterChange');
       const onKeyUp = validationFlags.includes('onKeyUp');
 
       if (WRITEABLE_INPUTS.includes(field.type)) {
@@ -568,14 +740,15 @@ export class Validation implements FormValidation {
     const { rules, messages } = this.config.fields[fieldName];
 
     if (rules.length && rules.includes(ruleName)) {
-      const newRules = rules.filter(rule => rule !== ruleName);
+      const newRules = rules.filter((rule) => rule !== ruleName);
       const newMessages = { ...messages };
       delete newMessages[ruleName];
 
       this.config.fields[fieldName].rules = newRules;
       this.config.fields[fieldName].messages = newMessages;
 
-      if (ruleName === 'required') this.config.fields[fieldName].optional = true;
+      if (ruleName === 'required')
+        this.config.fields[fieldName].optional = true;
     }
   }
 
@@ -595,7 +768,6 @@ export class Validation implements FormValidation {
     this.setupFieldConfig(fieldName, config.rules, config.messages);
   }
 
-
   /**
    * Clones an object deeply.
    * We need this method to clone the configuration object and allow us to use the same configuration object in different instances.
@@ -603,7 +775,7 @@ export class Validation implements FormValidation {
    * @returns {T} - Cloned object.
    */
   cloneDeep<T>(obj: T): T {
-    if (obj === null || typeof obj !== "object") {
+    if (obj === null || typeof obj !== 'object') {
       return obj;
     }
 

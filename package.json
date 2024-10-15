@@ -12,7 +12,9 @@
     "build": "npm run clean && webpack --config ./webpack.config.js",
     "prepack": "npm run build",
     "dev": "http-server . -p 3000",
-    "test": "npm run build & playwright test"
+    "test": "npm run build & playwright test",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -30,7 +32,11 @@
     "@playwright/test": "^1.45.2",
     "@types/node": "^20.14.11",
     "del-cli": "^5.1.0",
+    "eslint": "^9.10.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "http-server": "^14.1.1",
+    "prettier": "^3.3.3",
     "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
