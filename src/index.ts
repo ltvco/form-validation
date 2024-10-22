@@ -608,7 +608,7 @@ export class Validation implements FormValidation {
     if (!this.fieldsToValidate.includes(field))
       throw new Error(`Field "${field.name}" is not being validated`);
 
-    return !!!this.validateField(field, silently);
+    return !!this.validateField(field, silently);
   }
 
   /**
