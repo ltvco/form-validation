@@ -794,3 +794,5 @@ export class Validation implements FormValidation {
     return copy;
   }
 }
+
+export { validatorRules as rules }
