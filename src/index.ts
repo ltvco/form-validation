@@ -119,7 +119,7 @@ export class Validation implements FormValidation {
       const normalizedValue = normalizer(field.value, field, this.form);
 
       // Only change the value if it's different from the normalized one.
-      if (normalizedValue && normalizedValue !== field.value) {
+      if (normalizedValue !== field.value) {
         field.value = normalizedValue;
       }
     }
