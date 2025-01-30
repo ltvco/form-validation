@@ -43,7 +43,7 @@ export interface ProcessedMessages {
 
 export interface FieldConfig {
   rules: Array<string>;
-  messages: ProcessedMessages;
+  messages: PreprocessedMessages;
   optional: boolean;
   inputContainer: InputContainer;
   errorPlacement: ErrorPlacement;
