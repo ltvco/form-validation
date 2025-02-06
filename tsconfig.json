@@ -11,7 +11,13 @@
     "declarationMap": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "./dist",
-    "declarationDir": "./dist/types"
+    "declarationDir": "./dist/types",
+    "baseUrl": ".",
+    "paths": {
+      "validation": ["src/index.ts"],
+      "validation/*": ["src/*"],
+      "dev/*": ["dev/*"]
+    }
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*", "./dev/**/*"]
 }

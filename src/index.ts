@@ -335,8 +335,12 @@ export class Validation implements FormValidation {
         const errorMessage = messages[errorRule];
 
         if (!silently)
-          this.onError(field, errorMessage, this.config.fields[field.name]);
-        return [field, errorMessage];
+          this.onError(
+            field,
+            errorMessage as string,
+            this.config.fields[field.name]
+          );
+        return [field, errorMessage as string];
       } else {
         this.onValid(field, this.config.fields[field.name]);
       }
