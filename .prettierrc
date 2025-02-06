@@ -1,6 +1,17 @@
 {
-  "semi": true,
+  "plugins": ["prettier-plugin-organize-attributes"],
+  "printWidth": 200,
   "singleQuote": true,
-  "tabWidth": 2,
-  "trailingComma": "es5"
+  "arrowParens": "avoid",
+  "quoteProps": "consistent",
+  "bracketSameLine": true,
+  "attributeGroups": ["^id$", "^class$", "^src$", "^width$", "^height$", "^alt$", "^loading$", "^role$", "$DEFAULT", "^data-"],
+  "overrides": [
+    {
+      "files": ["*.html"],
+      "options": {
+        "printWidth": 9999
+      }
+    }
+  ]
 }
