@@ -1,0 +1,318 @@
+/************ Font Import ************/
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Playwrite+IN:wght@100..400&display=swap');
+
+/************ Reset ************/
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Prevent font size inflation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+/* Remove default margin in favour of better control in authored CSS */
+body, h1, h2, h3, h4, p,
+figure, blockquote, dl, dd {
+  margin-block-end: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Set shorter line heights on headings and interactive elements */
+h1, h2, h3, h4,
+button, input, label {
+  line-height: 1.1;
+}
+
+/* Balance text wrapping on headings */
+h1, h2,
+h3, h4 {
+  text-wrap: balance;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+  color: currentColor;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input, button,
+textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Make sure textareas without a rows attribute are not tiny */
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+/* Anything that has been anchored to should have extra scroll margin */
+:target {
+  scroll-margin-block: 5ex;
+}
+
+/************ General ************/
+* {
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  font-size: 16px;
+  padding: 100px 10px 50px;
+  position: relative;
+  background: radial-gradient(circle at 30% 107%, #98fb98 0%, #90ee90 50%, #3cb371 100%);
+  overflow-x: hidden;
+  margin: 0;
+
+  &::before {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    inset: 0px;
+    opacity: 0.5;
+    pointer-events: none;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="19.5" numOctaves="10"/%3E%3C/filter%3E%3Crect width="100%" height="100%" filter="url(%23noise)"/%3E%3C/svg%3E');
+  }
+
+  @media (min-width: 768px) {
+    padding: 30px 20px;
+  }
+}
+
+main {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+/************ Header ************/
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  gap: 50px;
+
+  h1 {
+    font-family: "Playwrite IN", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .form-selector {
+    background: transparent;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 2px solid #111;
+    color: #111;
+    transition: all 0.3s ease;
+    appearance:none;
+    text-align: center;
+
+    &:hover,
+    &:focus {
+      outline: none;
+      background-color: rgba(255,255,255,0.5);
+    }
+  }
+}
+
+/************ Forms ************/
+section {
+  display: none;
+  gap: 100px;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 0;
+
+  &.active {
+    display: flex;
+  }
+
+  > p {
+    max-width: 500px;
+  }
+}
+
+form {
+  padding: 30px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+
+  hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #ccc;
+  }
+
+  fieldset {
+    display: contents;
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .input-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    column-gap: 10px;
+    row-gap: 4px;
+    font-size: 12px;
+    align-items: center;
+
+    label {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+      font-size: 12px;
+    }
+
+  }
+
+  p.error {
+    color: red;
+    font-size: 10px;
+    grid-column: 2;
+    margin: 0;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #333;
+    }
+
+    &:disabled {
+      background-color: #CCC;
+      color: #666;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* Custom Error Class */
+.custom-error-class,
+.custom-error-class [type="text"] {
+  border-color: orange;
+  color: orange;
+}
+
+.custom-valid-class,
+.custom-valid-class [type="text"] {
+  border-color: green;
+  color: green;
+}
+
+/* Custom Error Placement */
+.input-container-variant {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  gap: 16px;
+}
+
+.input-container-variant.valid {
+  border-color: green;
+}
+
+.input-container-variant.error {
+  border-color: red;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 2px solid #CCC;
+  border-radius: 8px;
+  padding: 10px 15px;
+  width: 100%;
+  gap: 8px;
+}
+
+.input-container-variant:not(.error) .input-wrapper:focus-within {
+  outline: 0;
+  border-color: #222;
+}
+
+.input-wrapper label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.input-wrapper [type="text"] {
+  margin: 0;
+  outline: 0;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+/* Invalid Handler */
+.error-subtitle {
+  text-align: center;
+  color: red;
+}
