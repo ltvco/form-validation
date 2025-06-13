@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Validation Library - Dev</title>
+</head>
+<body>
+  <header>
+    <h1>Form Validation Library</h1>
+    <div>
+      <select class="form-selector"></select>
+    </div>
+  </header>
+  <main>
+    <!-- Custom Form -->
+    <!-- Edit this one to test your changes if you need to, but remember to remove changes before committing -->
+    <style>
+      /* Add your custom styles here */
+    </style>
+    <section data-value="custom" data-label="Custom Form" class="active">
+      <p>
+        Use this form to test your custom changes.
+      </p>
+      <form>
+        <ul id="errors-te1" class="hidden"></ul>
+        <!-- Personal Information -->
+        <fieldset>
+          <leyend> Personal Information </leyend>
+          <div class="input-container">
+            <label for="fn-te1">First Name</label>
+            <input id="fn-te1" type="text" name="firstName" placeholder="Enter your First Name" required />
+          </div>
+          <div class="input-container">
+            <label for="ln-te1">Last Name</label>
+            <input id="ln-te1" type="text" name="lastName" placeholder="Enter your Last Name" required />
+          </div>
+          <div class="input-container">
+            <label for="em-te1">Email</label>
+            <input id="em-te1" type="email" name="email" placeholder="Enter your Email" required />
+          </div>
+          <div class="input-container">
+            <label for="ph-te1">Phone</label>
+            <input id="ph-te1" type="tel" name="phone" placeholder="Enter your Phone" required />
+          </div>
+        </fieldset>
+        <hr >
+        <!-- Shipping Address -->
+        <fieldset>
+          <leyend> Shipping Address </leyend>
+          <div class="input-container">
+            <label for="ad1-te1">Address</label>
+            <input id="ad1-te1" type="text" name="shippingAddress1" placeholder="Enter your Address" required />
+          </div>
+          <div class="input-container">
+            <label for="ad2-te1">Apt. #</label>
+            <input id="ad2-te1" type="text" name="shippingAddress2" placeholder="Enter your Apt. #" />
+          </div>
+          <div class="input-container">
+            <label for="city-te1">City</label>
+            <input id="city-te1" type="text" name="shippingCity" placeholder="Enter your City" required />
+          </div>
+          <div class="input-container">
+            <label for="state-te1">State</label>
+            <input id="state-te1" type="text" name="shippingState" placeholder="Enter your State" required />
+          </div>
+          <div class="input-container">
+            <label for="zipcode-te1">Zipcode</label>
+            <input id="zipcode-te1" type="text" name="shippingZipcode" placeholder="Enter your Zipcode" required />
+          </div>
+          <div class="input-container">
+            <label for="sas-te1">Billing address same as Shipping</label>
+            <input id="sas-te1" class="same-as-shipping-checkbox" type="checkbox" name="sameAsShipping" checked />
+          </div>
+        </fieldset>
+        <!-- Billing Address -->
+        <fieldset class="same-as-shipping-fieldset hidden">
+          <hr >
+          <leyend> Billing Address </leyend>
+          <div class="input-container">
+            <label for="ad1-2-te1">Address</label>
+            <input id="ad1-2-te1" type="text" name="billingAddress1" placeholder="Enter your Address" required />
+          </div>
+          <div class="input-container">
+            <label for="ad2-2-te1">Apt. #</label>
+            <input id="ad2-2-te1" type="text" name="billingAddress2" placeholder="Enter your Apt. #" />
+          </div>
+          <div class="input-container">
+            <label for="city-2-te1">City</label>
+            <input id="city-2-te1" type="text" name="billingCity" placeholder="Enter your City" required />
+          </div>
+          <div class="input-container">
+            <label for="state-2-te1">State</label>
+            <input id="state-2-te1" type="text" name="billingState" placeholder="Enter your State" required />
+          </div>
+          <div class="input-container">
+            <label for="zipcode-2-te1">Zipcode</label>
+            <input id="zipcode-2-te1" type="text" name="billingZipcode" placeholder="Enter your Zipcode" required />
+          </div>
+        </fieldset>
+        <hr >
+        <!-- Credit Card -->
+        <fieldset>
+          <leyend> Payment Information </leyend>
+          <div class="input-container">
+            <label for="cc-te1">Credit Card</label>
+            <input id="cc-te1" type="text" name="creditCard" placeholder="Enter your Credit Card" required />
+          </div>
+          <div class="input-container">
+            <label for="exp-te1">Expiration</label>
+            <input id="exp-te1" type="text" name="expiration" placeholder="Enter your Expiration" required />
+          </div>
+          <div class="input-container">
+            <label for="cvv-te1">CVV</label>
+            <input id="cvv-te1" type="text" name="cvv" placeholder="Enter your CVV" required />
+          </div>
+        </fieldset>
+
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+    <!-- End of Custom Form-->
+
+    <section data-value="basic" data-label="Basic Form">
+      <p>This form just uses basic validation and default messages.</p>
+      <form>
+        <div class="input-container">
+          <label for="name">Name</label>
+          <input type="text" name="name" placeholder="John Doe" />
+        </div>
+        <div class="input-container">
+          <label for="email">Email</label>
+          <input type="email" name="email" placeholder="john.doe@some.com" />
+        </div>
+        <div class="input-container">
+          <label for="password">Password</label>
+          <input type="password" name="password" placeholder="******" />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+    <section data-value="custom-error-valid-class" data-label="Custom Error & Valid Classes">
+      <p>
+        The validation of this form will add custom error and valid classes.
+        <br />
+        The error will display the label and borders in orange color, while the valid class will display them green.
+      </p>
+      <form>
+        <div class="input-container">
+          <label for="vin2">VIN</label>
+          <input id="vin2" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <button>Submit</button>
+      </form>
+    </section>
+
+    <section data-value="custom-error-valid-placement" data-label="Custom Error & Valid Placement">
+      <p>
+        The validation of this form will add custom error and valid placement.
+        <br />
+        The error can't be displayed in the default position as the label and the input are both encapsuled
+        <br />
+        in a div with the class <span>input-container</span>. So, the error will be displayed in the div with the class <span>input-wrapper</span>.
+      </p>
+      <form>
+        <div class="input-container-variant">
+          <div class="input-wrapper">
+            <label for="vin-evp">VIN</label>
+            <input id="vin-evp" type="text" name="vin" placeholder="" required />
+          </div>
+        </div>
+        <button>Submit</button>
+      </form>
+    </section>
+
+    <section data-value="invalid-handler" data-label="Invalid Handler">
+      <p>In this case, when an error is shown, the form will show a custom message on top of all fields that read "Oh No! We have errors :(" using the <span>invalidHandler</span> provided by the component.</p>
+      <form>
+        <h3 class="error-subtitle hidden">Oh No! We have errors :(</h3>
+        <div class="input-container">
+          <label for="vin-ih">VIN</label>
+          <input id="vin-ih" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <div class="input-container">
+          <label for="tos-ih">Do you agree with the Terms of Service?</label>
+          <input id="tos-ih" type="checkbox" name="tos" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="on-key-up" data-label="Validate on Key Up">
+      <p>This will validate the field on key up.</p>
+      <form>
+        <div class="input-container">
+          <label for="vin-ku">VIN</label>
+          <input id="vin-ku" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="on-change" data-label="Validate on Change">
+      <p>This will validate the field on change.</p>
+      <form>
+        <div class="input-container">
+          <label for="vin-c">VIN</label>
+          <input id="vin-c" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <div class="input-container">
+          <label for="tos-c">Do you agree with the Terms of Service?</label>
+          <input id="tos-c" type="checkbox" name="tos" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="on-key-up-after-change" data-label="Validate on Key Up After Change">
+      <p>This will validate the field on key up, but only after the field has been triggered the onChange event first.</p>
+      <form>
+        <div class="input-container">
+          <label for="vin-kuac">VIN</label>
+          <input id="vin-kuac" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <div class="input-container">
+          <label for="tos-kuac">Do you agree with the Terms of Service?</label>
+          <input id="tos-kuac" type="checkbox" name="tos" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="on-submit" data-label="Validate on Submit">
+      <p>This will only validate the field on when the form is submitted.</p>
+      <form>
+        <div class="input-container">
+          <label for="vin-s">VIN</label>
+          <input id="vin-s" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <div class="input-container">
+          <label for="tos-s">Do you agree with the Terms of Service?</label>
+          <input id="tos-s" type="checkbox" name="tos" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="custom-rules" data-label="Add Custom Rules">
+      <p>
+        In this instance, we're creating a custom rule ouside of the default ones.
+        <br />
+        You will need to write the word "Accept" in the input field to pass the validation.
+      </p>
+      <form>
+        <div class="input-container">
+          <label for="accept-in">Do You Accept?</label>
+          <input id="accept-in" type="text" name="accept" placeholder="Type the word 'Accept'" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="field-handlers" data-label="Field Handlers">
+      <p>In this example, we're using the <span>fieldValidHandler</span> and <span>fieldErrorHandler</span> callbacks to disable the submit button when the form is invalid and enable it when it's valid.</p>
+      <form>
+        <div class="input-container">
+          <label for="fn-hu">First Name</label>
+          <input id="fn-hu" type="text" name="firstName" placeholder="Enter your First Name" required />
+        </div>
+        <div class="input-container">
+          <label for="ln-hu">Last Name</label>
+          <input id="ln-hu" type="text" name="lastName" placeholder="Enter your Last Name" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="normalizer" data-label="Normalizer">
+      <p>In terms of functionality, it's just a normal validation, but the value will be normalized by passing through a function before it's validated.</p>
+      <form>
+        <div class="input-container">
+          <label for="fn-n">First Name</label>
+          <input id="fn-n" type="text" name="firstName" placeholder="Enter your First Name" required />
+        </div>
+        <div class="input-container">
+          <label for="ln-n">Last Name</label>
+          <input id="ln-n" type="text" name="lastName" placeholder="Enter your Last Name" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="required-validation" data-label="Required Validation">
+      <p>
+        Again, this is just a normal validation, but when initializing this form validation, both the <span>config</span> and the <span>rules</span> are empty.
+        <br />
+        The validation is being added just because the inputs had the <span>required</span> attribute.
+      </p>
+      <form>
+        <div class="input-container">
+          <label for="fn-rv">First Name</label>
+          <input id="fn-rv" type="text" name="firstName" placeholder="Enter your First Name" required />
+        </div>
+        <div class="input-container">
+          <label for="ln-rv">Last Name</label>
+          <input id="ln-rv" type="text" name="lastName" placeholder="Enter your Last Name" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="messages" data-label="Functions as Messages">
+      <p>
+        In this example, we're using functions as messages.
+        <br />
+        The <span>messages</span> object is being used to override the default messages, so they will be different than the messages at other forms with these fields.
+      </p>
+      <form>
+        <div class="input-container">
+          <label for="vin-m">VIN</label>
+          <input id="vin-m" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <div class="input-container">
+          <label for="tos-m">Do you agree with the Terms of Service?</label>
+          <input id="tos-m" type="checkbox" name="tos" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="dynamic-validation" data-label="Dynamic Validation">
+      <p>
+        Only fields visible are going to be validated, any hidden fields will be ignored.
+        <br />
+        In this case, the billing fields are marked as required, however since they're initially hidden, they won't be validated unless the user clicks on the checkbox and the fields are shown.
+      </p>
+      <form>
+        <fieldset>
+          <leyend> Shipping Address </leyend>
+          <div class="input-container">
+            <label for="dv-ad1">Address</label>
+            <input id="dv-ad1" type="text" name="shippingAddress1" placeholder="Enter your Address" required />
+          </div>
+          <div class="input-container">
+            <label for="dv-ad2">Apt. #</label>
+            <input id="dv-ad2" type="text" name="shippingAddress2" placeholder="Enter your Apt. #" />
+          </div>
+          <div class="input-container">
+            <label for="dv-city">City</label>
+            <input id="dv-city" type="text" name="shippingCity" placeholder="Enter your City" required />
+          </div>
+          <div class="input-container">
+            <label for="dv-sas">Billing address same as Shipping</label>
+            <input id="dv-sas" class="same-as-shipping-checkbox" type="checkbox" name="sameAsShipping" checked />
+          </div>
+        </fieldset>
+        <fieldset class="same-as-shipping-fieldset hidden">
+          <hr >
+          <leyend> Billing Address </leyend>
+          <div class="input-container">
+            <label for="dv-ad1">Address</label>
+            <input id="dv-ad1" type="text" name="billingAddress1" placeholder="Enter your Address" required />
+          </div>
+          <div class="input-container">
+            <label for="dv-ad2">Apt. #</label>
+            <input id="dv-ad2" type="text" name="billingAddress2" placeholder="Enter your Apt. #" />
+          </div>
+          <div class="input-container">
+            <label for="dv-city">City</label>
+            <input id="dv-city" type="text" name="billingCity" placeholder="Enter your City" required />
+          </div>
+        </fieldset>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
