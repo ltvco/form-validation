@@ -74,11 +74,11 @@ Where:
 
 Examples:
 
-- `fix/button-alignment`
-- `feat/add-password-validation`
-- `docs/update-readme`
-- `refactor/form-handler`
-- `chore/update-eslint-config`
+- `fix_button-alignment`
+- `feat_add-password-validation`
+- `docs_update-readme`
+- `refactor_form-handler`
+- `chore_update-eslint-config`
 
 Tips:
 
