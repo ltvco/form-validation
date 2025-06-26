@@ -11,6 +11,34 @@ Whether you're adding rules dynamically, modifying validation behavior at runtim
 - [Modifying Rules for Fields](#modifying-rules-for-fields)
 - [Manual Validation](#manual-validation)
 - [Full API Reference](#api-reference)
+  - [Constructor](#constructor)
+  - [Configuration](#configuration)
+    - [`validationFlags`](#validationflags)
+    - [`submitCallback`](#submitcallback)
+    - [`invalidHandler`](#invalidhandler)
+    - [`fields`](#fields)
+    - [`rules`](#rules)
+    - [`messages`](#messages)
+    - [`optional`](#optional)
+    - [`inputContainer`](#inputcontainer)
+    - [`errorPlacement`](#errorplacement)
+    - [`errorClass`](#errorclass)
+    - [`errorTag`](#errortag)
+    - [`validClass`](#validclass)
+    - [`normalizer`](#normalizer)
+    - [`fieldErrorHandler`](#fielderrorhandler)
+    - [`fieldValidHandler`](#fieldvalidhandler)
+    - [`fieldHandlerKeepFunctionality`](#fieldhandlerkeepfunctionality)
+  - [Dynamic Rules](#dynamic-rules)
+  - [Default Rules](#default-rules)
+  - [Public Methods](#public-methods)
+    - [`isValid()`](#isvalid)
+    - [`validateForm(silently)`](#validateformsilently)
+    - [`isFieldValid(field, silently)`](#isfieldvalidfield-silently)
+    - [`addMethod(name, validator, message)`](#addmethodname-validator-message)
+    - [`setFieldRules(fieldName, rules, messages)`](#setfieldrulesfieldname-rules-messages)
+    - [`addFieldRule(fieldName, ruleName, message)`](#addfieldrulefieldname-rulename-message)
+    - [`removeFieldRule(fieldName, ruleName)`](#removefieldrulefieldname-rulename)
 
 ## Getting Started
 
@@ -111,7 +139,7 @@ const isFormValid = myValidation.validateForm(true); // Silent validation
 
 ### Constructor
 
-```javascript
+```js
 constructor(form, config, rules);
 ```
 
@@ -121,13 +149,9 @@ constructor(form, config, rules);
 - **`config`** `{Object}`: _[Optional]_ Object containing fields to validate, which rules to apply, and other configurations.
 - **`rules`** `{Object}`: _[Optional]_ Custom rules to use in validation.
 
----
-
 #### Returns
 
 An instance with the validation.
-
----
 
 #### Description
 
@@ -135,9 +159,13 @@ Sets up all variables and configurations for validation to work on a form.
 
 ---
 
-#### Configuration
+### Configuration
 
-```javascript
+The `config` object allows you to control how validation works on your form. It defines which fields should be validated, when validation should occur, what to do on submission or errors, and how error styling and messages are handled.
+
+Here’s an example of a complete configuration object:
+
+```js
 const config = {
   validationFlags: ['onSubmit', 'onChange', 'onKeyUpAfterChange'],
   submitCallback: (formObj) => console.log(formObj);
@@ -159,9 +187,11 @@ const config = {
 }
 ```
 
+The `config` object supports several attributes that control the behavior of the validation process. Below is a breakdown of the main configuration options and their roles.
+
 ---
 
-##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">`validationFlags`</span>
+#### `validationFlags`
 
 Array with triggers that define when will the validator check for the validity of the fields.
 
@@ -176,13 +206,13 @@ Array with triggers that define when will the validator check for the validity o
 
 **Default Value**
 
-```javascript
+```js
 validationFlags: ['onChange', 'onKeyUpAfterChange', 'onSubmit'];
 ```
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   validationFlags: ['onKeyUp', 'onSubmit'],
@@ -192,7 +222,7 @@ const myConfig = {
 
 ---
 
-##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">`submitCallback`</span>
+#### `submitCallback`
 
 Function to be called when the form is submitted successfully. It's important to mention that by default, the inputs will be sanitized before calling this function.
 
@@ -205,13 +235,13 @@ Function to be called when the form is submitted successfully. It's important to
 
 **Default Value**
 
-```javascript
+```js
 submitCallback: (formObj, form) => form.submit();
 ```
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   submitCallback: function(formObject, form) {
@@ -233,7 +263,7 @@ const myConfig = {
 
 ---
 
-##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">`invalidHandler`</span>
+#### `invalidHandler`
 
 Function to be called when the form is submitted with errors.
 
@@ -246,13 +276,13 @@ Function to be called when the form is submitted with errors.
 
 **Default Value**
 
-```javascript
+```js
 invalidHandler: () => {};
 ```
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   invalidHandler: function(errors, form) {
@@ -272,13 +302,13 @@ const myConfig = {
 
 ---
 
-##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">`fields`</span>
+#### `fields`
 
 An object where we configure each of the fields we want to validate, along with each of the rules we want to add to the field. The `key` of each object must match the `name` of an input.
 
 **Structure**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -311,13 +341,13 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`rules`</span>
+#### `rules`
 
 An array with all the rules to validate for each of the fields. The order of the array is important as well, as the validator will prioritize rules in ascending order, meaning the smaller the index, the higher priority it has.
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -333,7 +363,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`messages`</span>
+#### `messages`
 
 An object containing any messages to be overwritten with a custom error message. Each object `key` must match a `rule` name. The `value` can either be a `string` or a function that resolves to a `string`.
 
@@ -343,7 +373,7 @@ It's also important to know that the messages are added to the DOM as `innerHTML
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -364,7 +394,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`optional`</span>
+#### `optional`
 
 Boolean to define if the field is optional or not. If `true`, the field will be marked as optional and won't be validated if it's empty. If `false`, the field will be marked as `required` and will be validated even if it's empty.
 
@@ -379,7 +409,7 @@ A few things to keep in mind:
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -401,7 +431,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`inputContainer`</span>
+#### `inputContainer`
 
 A `string` with a selector matching one of the field's parents where the `errorClass` will be added when the field is invalid. If the selector doesn't match any of the field's parents, the `errorClass` will be placed on the parent element.
 
@@ -409,7 +439,7 @@ A `string` with a selector matching one of the field's parents where the `errorC
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -425,7 +455,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`errorPlacement`</span>
+#### `errorPlacement`
 
 Function to be called when the error element is created. The function receives the `input` element and the `error` element (not yet attached to the DOM) as parameters. The function is expected to add the `error` element to the DOM.
 
@@ -440,13 +470,13 @@ Function to be called when the error element is created. The function receives t
 
 **Default Value:**
 
-```javascript
+```js
   errorPlacement: (input, errorElement) => input.parentElement!.appendChild(errorElement),
 ```
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -462,7 +492,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`errorClass`</span>
+#### `errorClass`
 
 A string with a class that will be added to the `inputContainer` element when the field is invalid. By default, the class `error` is added when the field is invalid.
 
@@ -472,7 +502,7 @@ It's also important to note that the class `error` will also be added to the inp
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -488,7 +518,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`errorTag`</span>
+#### `errorTag`
 
 A string of the element tag in which the error will be displayed. An element of the type `errorTag` will be created and placed as the last child of the `inputContainer` element. It will always have the class `error`.
 
@@ -496,7 +526,7 @@ A string of the element tag in which the error will be displayed. An element of 
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -512,7 +542,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`validClass`</span>
+#### `validClass`
 
 A string of the class name that will be added to the `inputContainer` element when the `input` is valid. By default, the class `valid` is added when the field is valid.
 
@@ -522,7 +552,7 @@ Like with the `error` class, it's important to note that the class `valid` will 
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -538,7 +568,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`normalizer`</span>
+#### `normalizer`
 
 This function serves the purpose of adjusting the value in any way before it's validated. This function is destructive so it will change the value of the input. If the function is present, it will be added to the `onKeyDown` event to writeable inputs (`text`, `password`, `email`, etc.), or `onChange` to all other inputs before being validated.
 
@@ -552,13 +582,13 @@ This function serves the purpose of adjusting the value in any way before it's v
 
 **Default Value:**
 
-```javascript
+```js
   normalizer: (value, input, form) => {},
 ```
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -574,7 +604,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`fieldErrorHandler`</span>
+#### `fieldErrorHandler`
 
 Function to be called when the field is validated and it has errors. There's 2 ways to use this function, either you can use it to completely replace the default functionality, or you can use it to add your own functionality on top of the default one. This is done with the `fieldHandlerKeepFunctionality` property, which if `true` will keep the default functionality, and if `false` will replace it.
 
@@ -589,7 +619,7 @@ Function to be called when the field is validated and it has errors. There's 2 w
 
 **Default Functionality:**
 
-```javascript
+```js
 function onError(field, fieldConfig) {
   this.errors.push([field, message]);
   const { optional, errorClass, inputContainer, validClass } = fieldConfig;
@@ -631,7 +661,7 @@ function onError(field, fieldConfig) {
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -654,7 +684,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`fieldValidHandler`</span>
+#### `fieldValidHandler`
 
 Function to be called when the field is validated and it passes all the rules. Similarly to the `fieldErrorHandler`, there's 2 ways to use this function, either you can use it to completely replace the default functionality, or you can use it to add your own functionality on top of the default one. This is done with the `fieldHandlerKeepFunctionality` property, which if `true` will keep the default functionality, and if `false` will replace it.
 
@@ -668,7 +698,7 @@ Function to be called when the field is validated and it passes all the rules. S
 
 **Default Functionality:**
 
-```javascript
+```js
 function onValid(field, fieldConfig) {
   const { optional, errorClass, inputContainer, validClass } = fieldConfig;
   this.errors = this.errors.filter(([errorField]) => errorField !== field);
@@ -707,7 +737,7 @@ function onValid(field, fieldConfig) {
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -727,7 +757,7 @@ const myConfig = {
 
 ---
 
-###### <span style="font-size: 16px; text-transform: none; font-weight: 700;">`fieldHandlerKeepFunctionality`</span>
+#### `fieldHandlerKeepFunctionality`
 
 Boolean to define if the default functionality of the `fieldErrorHandler` and `fieldValidHandler` should be kept or not. If `true`, the default functionality will be kept, and if `false` it will be replaced.
 
@@ -735,7 +765,7 @@ Boolean to define if the default functionality of the `fieldErrorHandler` and `f
 
 **Usage**
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -762,7 +792,7 @@ const myConfig = {
 
 ---
 
-##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">Dynamic Rules</span>
+### Dynamic Rules
 
 There's also a way to add dynamic rules, where we can pass arguments to the rule's validator. This way we can have rules that differ in just a certain variable without having to have a rule for each of the variants.
 
@@ -770,7 +800,7 @@ So a use case for this is for example if we want a rule to limit the amount of c
 
 So the way this works is you define a rule like normal, but pass the parameters as a third argument when calling the `validator`. This also applies to the `message`, as the parameters will be passed to the function, but it's not a requirement.
 
-```javascript
+```js
 {
   ...,
   characterAmount: {
@@ -789,7 +819,7 @@ So the way this works is you define a rule like normal, but pass the parameters 
 
 The way to use it is to call it with the wanted parameters in the `rules` array in the configuration. In this case, it would be as follows:
 
-```javascript
+```js
 const myConfig = {
   ...
   fields: {
@@ -804,7 +834,7 @@ const myConfig = {
 
 ---
 
-##### <span style="font-size: 18px; text-transform: none; font-weight: 700;">Default Rules</span>
+### Default Rules
 
 The validator comes with a predefined amount of rules ready to be used.
 
@@ -837,7 +867,7 @@ Function to check if all fields in the form are valid. This doesn't re-validate 
 
 **Usage**
 
-```javascript
+```js
 if (myValidation.isValid()) {
   console.log('The form is valid');
 } else {
@@ -862,7 +892,7 @@ This function forces all the fields to be validated. A flag can be passed to dis
 
 **Usage**
 
-```javascript
+```js
 const isFormValid = myValidation.validateForm();
 ```
 
@@ -884,7 +914,7 @@ This function forces a specific field to be validated. A flag can be passed to d
 
 **Usage**
 
-```javascript
+```js
 const isFieldValid = myValidation.isFieldValid('myField');
 ```
 
@@ -904,7 +934,7 @@ This function adds a new validation rule or modifies an existing one. If you pas
 
 **Usage**
 
-```javascript
+```js
 myValidation.addMethod(
   'customRule2',
   (field) => field.value !== '',
@@ -928,7 +958,7 @@ This function sets the validation rules for a specific field. If the field alrea
 
 **Usage**
 
-```javascript
+```js
 myValidation.setFieldRules('fieldName', ['customRule', 'customRule2'], {
   customRule: 'This is a custom error message for customRule',
   customRule2: 'This is a custom error message for customRule2',
@@ -951,7 +981,7 @@ This function adds a validation rule to a specific field. If the field already h
 
 **Usage**
 
-```javascript
+```js
 myValidation.addFieldRule(
   'fieldName',
   'customRule3',
@@ -977,6 +1007,6 @@ This function removes a validation rule from a specific field.
 
 **Usage**
 
-```javascript
+```js
 myValidation.removeFieldRule('fieldName', 'customRule3');
 ```
