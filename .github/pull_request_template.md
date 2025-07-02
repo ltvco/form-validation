@@ -1,39 +1,52 @@
-# Description
+## Description
 
-[Provide a brief description of the changes introduced by this pull request. Explain the purpose and goals of the changes.]
-[Please include a summary of the changes and the motivation behind them.]
+<!-- Describe your changes in detail. What functionality did you add, change, or remove? -->
 
-# Testing
+## Motivation & Context
 
-[Describe the steps you followed to test the changes made in this PR. Include details about the environment, configurations, and any test cases.]
+<!-- Why is this change needed? What problem or context does it address? -->
 
-# Related Issue
 
-[If this PR addresses an open issue, link it here (e.g., #4).]
+## Type of Change
 
-## Type of Change / Changes Made
+<!-- Select all that apply by putting an `x` in the boxes below. -->
 
-- [List the key changes made in this PR. (e.g., below)]
+- [ ] Bug fix (non-breaking change that fixes an issue)
+- [ ] New feature (non-breaking change that adds functionality)
+- [ ] Refactoring (non-breaking change with no user-facing impact)
+- [ ] Breaking change (fix or feature that changes existing behavior)
+- [ ] Documentation update
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] This change requires a documentation update
+## Related Issues
 
-## Checklist:
+<!-- Link to related issues or tickets (e.g., Fixes #123, Closes #456) -->
 
-- [ ] I have read the contributing guidelines
-- [ ] My code follows the style guidelines of this project
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes do not introduce any new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
+## Testing
 
-# Screenshots (if applicable)
+<!-- Explain how you tested your changes. Include instructions for reproducing, test environment details, or screenshots of tests if applicable. -->
 
-[Add screenshots or GIFs to explain the visual changes in this PR.]
+## Checklist
 
-# Additional Information
+<!-- Go over all the following points, and put an `x` in all the boxes that apply to ensure completeness -->
 
-[Provide any additional context or information about this PR.]
+- [ ] I have read the [contributing guidelines](https://github.com/ltvco/form-validation/blob/main/CONTRIBUTING.md)
+- [ ] My code follows the style guidelines for this project
+- [ ] I have commented important parts of the code
+- [ ] I have made necessary updates to the documentation
+- [ ] I have added or updated tests to prove my changes work
+- [ ] All tests pass locally
+- [ ] This PR does not introduce new warnings or console errors
+
+## Live Preview (if applicable)
+
+<!-- Add a link to the preview environment, e.g., Netlify or Storybook link. If not applicable, you can remove this section. -->
+
+- [Preview Link](https://your-preview-link.com)
+
+## Screenshots (if applicable)
+
+<!-- Add screenshots or GIFs to show UI/UX changes -->
+
+## Additional Notes
+
+<!-- Include any other relevant information, dependencies, or follow-ups -->
