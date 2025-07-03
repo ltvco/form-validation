@@ -1,39 +1,26 @@
-# Description
+## Description
 
-[Provide a brief description of the changes introduced by this pull request. Explain the purpose and goals of the changes.]
-[Please include a summary of the changes and the motivation behind them.]
+<!-- Briefly describe the changes. What functionality did you add, change, or remove? And, why is this change needed?-->
 
-# Testing
+## Type of Change
 
-[Describe the steps you followed to test the changes made in this PR. Include details about the environment, configurations, and any test cases.]
+- [ ] Bug fix (non-breaking change that fixes an issue)
+- [ ] New feature (non-breaking change that adds functionality)
+- [ ] Refactoring (non-breaking change with no user-facing impact)
+- [ ] Breaking change (fix or feature that changes existing behavior)
+- [ ] Documentation update
+- [ ] Configuration (changes to build setup, tooling, or CI/CD)
+- [ ] Chore (maintenance, code cleanup, or minor non-functional tasks)
+- [ ] Test (adding or updating tests)
 
-# Related Issue
+## Related Issues
 
-[If this PR addresses an open issue, link it here (e.g., #4).]
+<!-- Link to any related issues or PRs -->
 
-## Type of Change / Changes Made
+## Testing
 
-- [List the key changes made in this PR. (e.g., below)]
+<!-- Briefly describe how you tested your changes -->
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] This change requires a documentation update
+## Screenshots / Preview Link (if applicable)
 
-## Checklist:
-
-- [ ] I have read the contributing guidelines
-- [ ] My code follows the style guidelines of this project
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes do not introduce any new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-
-# Screenshots (if applicable)
-
-[Add screenshots or GIFs to explain the visual changes in this PR.]
-
-# Additional Information
-
-[Provide any additional context or information about this PR.]
+<!-- Add screenshots or links to preview environments if relevant -->

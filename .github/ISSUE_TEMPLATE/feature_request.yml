@@ -1,0 +1,56 @@
+name: Feature request
+description: Suggest new or updated features to include in the form validation library.
+title: "Suggest a new feature"
+labels: [enhancement]
+body:
+  - type: checkboxes
+    attributes:
+      label: Prerequisites
+      description: Take a couple minutes to help our maintainers work faster.
+      options:
+        - label: I have [searched](https://github.com/ltvco/form-validation/issues?q=is%3Aissue%20state%3Aopen%20label%3Aenhancement) for duplicate or closed feature requests
+          required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Provide detailed information for what we should add, including relevant links to prior art, screenshots, or live demos whenever possible.
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation and context
+      description: Tell us why this change is needed or helpful, and what problems it may help solve.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution
+      description: Describe the solution you'd like to see implemented.
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Describe alternative solutions or features you've considered.
+    validations:
+      required: false
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: Use cases
+      description: Describe specific scenarios where this feature would be beneficial.
+      placeholder: |
+        Example:
+        ```js
+        // Current workaround
+        validator.addRule('custom', function(value) { /* ... */ });
+        
+        // Proposed feature
+        validator.validateAsync('email', value).then(/* ... */);
+        ```
+    validations:
+      required: false
