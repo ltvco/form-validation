@@ -78,6 +78,17 @@ body:
       placeholder: "e.g., Chrome 124.0.6367.91 or Safari 17.5"
     validations:
       required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Where does the bug occur?
+      description: Select the environment(s) where you noticed the issue.
+      multiple: true
+      options:
+        - Mobile
+        - Desktop
+    validations:
+      required: true
   - type: textarea
     id: form-setup
     attributes:
