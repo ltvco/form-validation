@@ -13,7 +13,8 @@
     "start": "webpack serve --config ./webpack.dev.js",
     "prepack": "npm run build",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "setup": "find dev/ -type f -exec git update-index --skip-worktree {} \\; && echo 'Dev environment configured: changes to dev/ files will be ignored by Git'"
   },
   "repository": {
     "type": "git",
