@@ -1,14 +1,17 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
+// Check if we're in test mode via environment variable
+const isTestMode = process.env.NODE_ENV === 'test';
+
 module.exports = {
   mode: 'development',
-  entry: './dev/index.ts',
+  entry: isTestMode ? './src/index.ts' : './dev/index.ts',
   devtool: 'inline-source-map',
   stats: 'minimal',
   devServer: {
     host: '0.0.0.0',
-    static: './dev/dist',
+    static: isTestMode ? './dist' : './dev/dist',
     hot: false,
     liveReload: true,
     client: {
@@ -50,7 +53,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './dev/index.html',
+      template: isTestMode ? './tests/index.html' : './dev/index.html',
       inject: 'body',
     }),
   ],

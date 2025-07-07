@@ -2,92 +2,450 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form Validation Test</title>
+  <title>Form Validation Library - Test Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .error {
+      color: #dc3545;
+      font-size: 12px;
+    }
+    .valid {
+      color: #28a745;
+    }
+    .input-container {
+      margin-bottom: 15px;
+    }
+    .input-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .input-container input,
+    .input-container select,
+    .input-container textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .input-container input.error,
+    .input-container select.error,
+    .input-container textarea.error {
+      border-color: #dc3545;
+    }
+    .input-container input.valid,
+    .input-container select.valid,
+    .input-container textarea.valid {
+      border-color: #28a745;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    button:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+    fieldset {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    legend {
+      font-weight: bold;
+      padding: 0 10px;
+    }
+    hr {
+      border: 0;
+      height: 1px;
+      background: #ddd;
+      margin: 20px 0;
+    }
+    .submitted {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+    .error-subtitle {
+      color: #dc3545;
+      font-size: 14px;
+      margin: 10px 0;
+    }
+    .same-as-shipping-fieldset.hidden {
+      display: none;
+    }
+    .input-container-variant {
+      margin-bottom: 15px;
+    }
+    .input-wrapper {
+      position: relative;
+    }
+  </style>
 </head>
 <body>
-  <h1>Basic testing form</h1>
-  <form id="testForm">
-    <div>
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name">
-    </div>
-    <div>
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
-    </div>
-    <div>
-      <label for="age">Age:</label>
-      <input type="tel" id="age" name="age">
-    </div>
-    <button type="submit">
-      Submit
-    </button>
-  </form>
+  <header>
+    <h1>Form Validation Library - Test Page</h1>
+  </header>
+  <main>
+    <!-- Basic Form -->
+    <section data-value="basic" data-label="Basic Form">
+      <h2>Basic Form</h2>
+      <p>This form just uses basic validation and default messages.</p>
+      <form>
+        <div class="input-container">
+          <label for="name">Name</label>
+          <input type="text" name="name" placeholder="John Doe" />
+        </div>
+        <div class="input-container">
+          <label for="email">Email</label>
+          <input type="email" name="email" placeholder="john.doe@some.com" />
+        </div>
+        <div class="input-container">
+          <label for="password">Password</label>
+          <input type="password" name="password" placeholder="******" />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <!-- Custom Form -->
+    <section data-value="custom" data-label="Custom Form">
+      <h2>Custom Form</h2>
+      <p>Use this form to test custom configurations.</p>
+      <form>
+        <ul id="errors-te1" class="hidden"></ul>
+        <!-- Personal Information -->
+        <fieldset>
+          <legend>Personal Information</legend>
+          <div class="input-container">
+            <label for="fn-te1">First Name</label>
+            <input id="fn-te1" type="text" name="firstName" placeholder="Enter your First Name" required />
+          </div>
+          <div class="input-container">
+            <label for="ln-te1">Last Name</label>
+            <input id="ln-te1" type="text" name="lastName" placeholder="Enter your Last Name" required />
+          </div>
+          <div class="input-container">
+            <label for="em-te1">Email</label>
+            <input id="em-te1" type="email" name="email" placeholder="Enter your Email" required />
+          </div>
+          <div class="input-container">
+            <label for="ph-te1">Phone</label>
+            <input id="ph-te1" type="tel" name="phone" placeholder="Enter your Phone" required />
+          </div>
+        </fieldset>
+        <hr>
+        <!-- Shipping Address -->
+        <fieldset>
+          <legend>Shipping Address</legend>
+          <div class="input-container">
+            <label for="ad1-te1">Address</label>
+            <input id="ad1-te1" type="text" name="shippingAddress1" placeholder="Enter your Address" required />
+          </div>
+          <div class="input-container">
+            <label for="ad2-te1">Apt. #</label>
+            <input id="ad2-te1" type="text" name="shippingAddress2" placeholder="Enter your Apt. #" />
+          </div>
+          <div class="input-container">
+            <label for="city-te1">City</label>
+            <input id="city-te1" type="text" name="shippingCity" placeholder="Enter your City" required />
+          </div>
+          <div class="input-container">
+            <label for="state-te1">State</label>
+            <input id="state-te1" type="text" name="shippingState" placeholder="Enter your State" required />
+          </div>
+          <div class="input-container">
+            <label for="zipcode-te1">Zipcode</label>
+            <input id="zipcode-te1" type="text" name="shippingZipcode" placeholder="Enter your Zipcode" required />
+          </div>
+          <div class="input-container">
+            <label for="sas-te1">Billing address same as Shipping</label>
+            <input id="sas-te1" class="same-as-shipping-checkbox" type="checkbox" name="sameAsShipping" checked />
+          </div>
+        </fieldset>
+        <!-- Billing Address -->
+        <fieldset class="same-as-shipping-fieldset hidden">
+          <hr>
+          <legend>Billing Address</legend>
+          <div class="input-container">
+            <label for="ad1-2-te1">Address</label>
+            <input id="ad1-2-te1" type="text" name="billingAddress1" placeholder="Enter your Address" required />
+          </div>
+          <div class="input-container">
+            <label for="ad2-2-te1">Apt. #</label>
+            <input id="ad2-2-te1" type="text" name="billingAddress2" placeholder="Enter your Apt. #" />
+          </div>
+          <div class="input-container">
+            <label for="city-2-te1">City</label>
+            <input id="city-2-te1" type="text" name="billingCity" placeholder="Enter your City" required />
+          </div>
+          <div class="input-container">
+            <label for="state-2-te1">State</label>
+            <input id="state-2-te1" type="text" name="billingState" placeholder="Enter your State" required />
+          </div>
+          <div class="input-container">
+            <label for="zipcode-2-te1">Zipcode</label>
+            <input id="zipcode-2-te1" type="text" name="billingZipcode" placeholder="Enter your Zipcode" required />
+          </div>
+        </fieldset>
+        <hr>
+        <!-- Credit Card -->
+        <fieldset>
+          <legend>Payment Information</legend>
+          <div class="input-container">
+            <label for="cc-te1">Credit Card</label>
+            <input id="cc-te1" type="text" name="creditCard" placeholder="Enter your Credit Card" required />
+          </div>
+          <div class="input-container">
+            <label for="exp-te1">Expiration</label>
+            <input id="exp-te1" type="text" name="expiration" placeholder="Enter your Expiration" required />
+          </div>
+          <div class="input-container">
+            <label for="cvv-te1">CVV</label>
+            <input id="cvv-te1" type="text" name="cvv" placeholder="Enter your CVV" required />
+          </div>
+        </fieldset>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <!-- Test Forms for Various Scenarios -->
+    <section data-value="custom-error-valid-class" data-label="Custom Error & Valid Classes">
+      <h2>Custom Error & Valid Classes</h2>
+      <form>
+        <div class="input-container">
+          <label for="vin2">VIN</label>
+          <input id="vin2" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="custom-error-valid-placement" data-label="Custom Error & Valid Placement">
+      <h2>Custom Error & Valid Placement</h2>
+      <form>
+        <div class="input-container-variant">
+          <div class="input-wrapper">
+            <label for="vin-evp">VIN</label>
+            <input id="vin-evp" type="text" name="vin" placeholder="" required />
+          </div>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="invalid-handler" data-label="Invalid Handler">
+      <h2>Invalid Handler</h2>
+      <form>
+        <h3 class="error-subtitle hidden">Oh No! We have errors :(</h3>
+        <div class="input-container">
+          <label for="vin-ih">VIN</label>
+          <input id="vin-ih" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <div class="input-container">
+          <label for="tos-ih">Do you agree with the Terms of Service?</label>
+          <input id="tos-ih" type="checkbox" name="tos" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="on-key-up" data-label="Validate on Key Up">
+      <h2>Validate on Key Up</h2>
+      <form>
+        <div class="input-container">
+          <label for="vin-ku">VIN</label>
+          <input id="vin-ku" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="on-change" data-label="Validate on Change">
+      <h2>Validate on Change</h2>
+      <form>
+        <div class="input-container">
+          <label for="vin-c">VIN</label>
+          <input id="vin-c" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <div class="input-container">
+          <label for="tos-c">Do you agree with the Terms of Service?</label>
+          <input id="tos-c" type="checkbox" name="tos" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="on-key-up-after-change" data-label="Validate on Key Up After Change">
+      <h2>Validate on Key Up After Change</h2>
+      <form>
+        <div class="input-container">
+          <label for="vin-kuac">VIN</label>
+          <input id="vin-kuac" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <div class="input-container">
+          <label for="tos-kuac">Do you agree with the Terms of Service?</label>
+          <input id="tos-kuac" type="checkbox" name="tos" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="on-submit" data-label="Validate on Submit">
+      <h2>Validate on Submit</h2>
+      <form>
+        <div class="input-container">
+          <label for="vin-s">VIN</label>
+          <input id="vin-s" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <div class="input-container">
+          <label for="tos-s">Do you agree with the Terms of Service?</label>
+          <input id="tos-s" type="checkbox" name="tos" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="custom-rules" data-label="Add Custom Rules">
+      <h2>Add Custom Rules</h2>
+      <form>
+        <div class="input-container">
+          <label for="accept-in">Do You Accept?</label>
+          <input id="accept-in" type="text" name="accept" placeholder="Type the word 'Accept'" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="field-handlers" data-label="Field Handlers">
+      <h2>Field Handlers</h2>
+      <form>
+        <div class="input-container">
+          <label for="fn-hu">First Name</label>
+          <input id="fn-hu" type="text" name="firstName" placeholder="Enter your First Name" required />
+        </div>
+        <div class="input-container">
+          <label for="ln-hu">Last Name</label>
+          <input id="ln-hu" type="text" name="lastName" placeholder="Enter your Last Name" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="normalizer" data-label="Normalizer">
+      <h2>Normalizer</h2>
+      <form>
+        <div class="input-container">
+          <label for="fn-n">First Name</label>
+          <input id="fn-n" type="text" name="firstName" placeholder="Enter your First Name" required />
+        </div>
+        <div class="input-container">
+          <label for="ln-n">Last Name</label>
+          <input id="ln-n" type="text" name="lastName" placeholder="Enter your Last Name" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="required-validation" data-label="Required Validation">
+      <h2>Required Validation</h2>
+      <form>
+        <div class="input-container">
+          <label for="fn-rv">First Name</label>
+          <input id="fn-rv" type="text" name="firstName" placeholder="Enter your First Name" required />
+        </div>
+        <div class="input-container">
+          <label for="ln-rv">Last Name</label>
+          <input id="ln-rv" type="text" name="lastName" placeholder="Enter your Last Name" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="messages" data-label="Functions as Messages">
+      <h2>Functions as Messages</h2>
+      <form>
+        <div class="input-container">
+          <label for="vin-m">VIN</label>
+          <input id="vin-m" type="text" name="vin" placeholder="Enter a VIN" required />
+        </div>
+        <div class="input-container">
+          <label for="tos-m">Do you agree with the Terms of Service?</label>
+          <input id="tos-m" type="checkbox" name="tos" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section data-value="dynamic-validation" data-label="Dynamic Validation">
+      <h2>Dynamic Validation</h2>
+      <form>
+        <fieldset>
+          <legend>Shipping Address</legend>
+          <div class="input-container">
+            <label for="dv-ad1">Address</label>
+            <input id="dv-ad1" type="text" name="shippingAddress1" placeholder="Enter your Address" required />
+          </div>
+          <div class="input-container">
+            <label for="dv-ad2">Apt. #</label>
+            <input id="dv-ad2" type="text" name="shippingAddress2" placeholder="Enter your Apt. #" />
+          </div>
+          <div class="input-container">
+            <label for="dv-city">City</label>
+            <input id="dv-city" type="text" name="shippingCity" placeholder="Enter your City" required />
+          </div>
+          <div class="input-container">
+            <label for="dv-sas">Billing address same as Shipping</label>
+            <input id="dv-sas" class="same-as-shipping-checkbox" type="checkbox" name="sameAsShipping" checked />
+          </div>
+        </fieldset>
+        <fieldset class="same-as-shipping-fieldset hidden">
+          <hr>
+          <legend>Billing Address</legend>
+          <div class="input-container">
+            <label for="dv-bad1">Address</label>
+            <input id="dv-bad1" type="text" name="billingAddress1" placeholder="Enter your Address" required />
+          </div>
+          <div class="input-container">
+            <label for="dv-bad2">Apt. #</label>
+            <input id="dv-bad2" type="text" name="billingAddress2" placeholder="Enter your Apt. #" />
+          </div>
+          <div class="input-container">
+            <label for="dv-bcity">City</label>
+            <input id="dv-bcity" type="text" name="billingCity" placeholder="Enter your City" required />
+          </div>
+        </fieldset>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Load the built library -->
+  <script src="/dist/index.js"></script>
+  <script>
+    // The UMD build should expose FormValidation as a global variable
+    if (typeof Validation === 'undefined') {
+      console.error('FormValidation library not loaded properly');
+    }
+  </script>
 </body>
-
-<script src="/dist/index.js"></script>
-<script>
-  // Expose Validation class globally
-  window.Validation = Validation;
-</script>
-
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-
-  h1 {
-    text-align: center;
-    margin-top: 50px;
-  }
-
-  form {
-    margin: 50px auto 0;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-
-  div {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    align-items: center;
-    gap: 20px;
-  }
-
-  label {
-    margin-right: 10px;
-    width: 100%;
-    text-align: right;
-  }
-
-  input {
-    width: 100%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  button {
-    margin-top: 30px;
-    padding: 10px 30px;
-    border: none;
-    border-radius: 20px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 18px;
-  }
-
-  button:hover {
-    background-color: #0056b3;
-  }
-</style>
-</html>
+</html> 
