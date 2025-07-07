@@ -16,7 +16,8 @@ declare global {
 
 test.describe('Form Validation Basic Tests', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://127.0.0.1:3000/tests');
+    await page.goto('/tests/index.html');
+    await page.waitForFunction(() => window.Validation);
   });
 
   // Validation class should be available and be able to be initialized
@@ -27,7 +28,7 @@ test.describe('Form Validation Basic Tests', () => {
     expect(validationExists).toBe(true);
 
     const validationInstance = await page.evaluate(() => {
-      const validation = new window.Validation('#testForm');
+      const validation = new window.Validation('section[data-value="basic"] form');
       return validation !== null && typeof validation === 'object';
     });
     expect(validationInstance).toBe(true);
@@ -41,10 +42,9 @@ test.describe('Form Validation Basic Tests', () => {
     expect(validationExists).toBe(true);
 
     const validationInstance = await page.evaluate(() => {
-      const validation = new window.Validation('#testForm', {
-        submitCallback: (formDataObj, form) => {
+      const validation = new window.Validation('section[data-value="basic"] form', {
+        submitCallback: (_, form) => {
           form?.classList.add('submitted');
-          console.log(formDataObj);
         },
         fields: {
           name: {
@@ -52,29 +52,40 @@ test.describe('Form Validation Basic Tests', () => {
           },
           email: {
             rules: ['required', 'validEmail'],
+            messages: {
+              required: 'Email is required',
+              validEmail: 'Please enter a valid email address',
+            },
+          },
+          password: {
+            rules: [],
+            optional: true,
           },
         },
       });
-      return validation !== null && typeof validation === 'object';
+      return validation;
     });
-    expect(validationInstance).toBe(true);
+    expect(validationInstance).not.toBeNull();
 
-    const submitButton = await page.$('button[type="submit"]');
+    const submitButton = await page.locator('section[data-value="basic"] button[type="submit"]');
     await submitButton?.click();
-    expect(await page.isVisible('.error')).toBe(true);
 
-    const nameInput = await page.$('#name');
-    const emailInput = await page.$('#email');
-    const ageInput = await page.$('#age');
+    expect(await page.isVisible('.name-error-element')).toBe(true);
+    expect(await page.isVisible('.email-error-element')).toBe(true);
+    expect(await page.locator('.password-error-element').count()).toBe(0);
 
-    await nameInput?.fill('John Doe');
-    await emailInput?.fill('jhon.doe@some.com');
-    await ageInput?.fill('26');
+    const nameInput = await page.locator('section[data-value="basic"] input[name="name"]');
+    const emailInput = await page.locator('section[data-value="basic"] input[name="email"]');
 
-    expect(await page.isVisible('.error')).toBe(false);
-    expect(await page.isVisible('.valid')).toBe(true);
+    // Use type() instead of fill() to trigger validation events
+    await nameInput?.pressSequentially('John Doe');
+    await emailInput?.pressSequentially('john.doe@some.com');
 
     await submitButton?.click();
-    expect(await page.isVisible('.submitted')).toBe(true);
+
+    expect(await page.isVisible('.name-error-element')).toBe(false);
+    expect(await page.isVisible('.email-error-element')).toBe(false);
+    expect(await page.locator('.password-error-element').count()).toBe(0);
+    expect(await page.isVisible('section[data-value="basic"] form.submitted')).toBe(true);
   });
 });
