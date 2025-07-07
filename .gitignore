@@ -3,7 +3,7 @@ node_modules
 .vscode
 dist
 *.zip
-dev
 playwright-report/
 test-results/
 playwright/.cache/
+dev/
