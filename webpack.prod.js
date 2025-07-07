@@ -6,8 +6,10 @@ module.exports = {
   output: {
     filename: 'index.js',
     library: {
+      name: 'FormValidation',
       type: 'umd',
     },
+    globalObject: 'this',
     clean: true,
   },
   resolve: {
