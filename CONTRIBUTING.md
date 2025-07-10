@@ -85,3 +85,25 @@ Tips:
 - Use lowercase.
 - Avoid long branch names.
 - Be specific but not overly detailed.
+
+## Development Environment Setup
+
+After cloning the repository, you'll need to configure your local development environment:
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure Development Directory
+
+The repository includes a `dev/` directory with test files and examples. To prevent your local changes to these files from being committed to the repository, run:
+
+```bash
+npm run setup
+```
+
+This command configures Git to ignore future changes to files in the `dev/` directory while keeping the original files in the repository for all contributors to use.
+
+**Note:** You only need to run this once after cloning the repository.
