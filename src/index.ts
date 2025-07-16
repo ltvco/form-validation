@@ -195,7 +195,6 @@ export class Validation implements FormValidation {
     message: string,
     fieldConfig: FieldConfig
   ) {
-    this.errors.push([field, message]);
     const {
       optional,
       errorClass,
@@ -333,6 +332,7 @@ export class Validation implements FormValidation {
 
       if (errorRule) {
         const errorMessage = messages[errorRule];
+        this.errors.push([field, errorMessage as string]);
 
         if (!silently)
           this.onError(
@@ -581,6 +581,7 @@ export class Validation implements FormValidation {
    * @returns True if all fields are valid, false otherwise.
    */
   isValid(): boolean {
+    this.validateAllVisibleFields(true);
     return this.errors.length === 0;
   }
 
@@ -591,7 +592,7 @@ export class Validation implements FormValidation {
    */
   validateForm(silently = true): boolean {
     this.validateAllVisibleFields(silently);
-    return this.isValid();
+    return this.errors.length === 0;
   }
 
   /**
