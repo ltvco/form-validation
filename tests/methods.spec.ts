@@ -514,6 +514,13 @@ test.describe('Form Validation Methods Tests', () => {
             lastName: { rules: ['required'] },
             email: { rules: ['required', 'validEmail'] },
             phone: { rules: ['required'] },
+            shippingAddress1: { rules: ['required'] },
+            shippingCity: { rules: ['required'] },
+            shippingState: { rules: ['required'] },
+            shippingZipcode: { rules: ['required'] },
+            creditCard: { rules: ['required'] },
+            expiration: { rules: ['required'] },
+            cvv: { rules: ['required'] },
           },
         });
         
@@ -534,11 +541,25 @@ test.describe('Form Validation Methods Tests', () => {
         const lastNameInput = document.querySelector('section[data-value="custom"] input[name="lastName"]') as HTMLInputElement;
         const emailInput = document.querySelector('section[data-value="custom"] input[name="email"]') as HTMLInputElement;
         const phoneInput = document.querySelector('section[data-value="custom"] input[name="phone"]') as HTMLInputElement;
+        const shippingAddress1Input = document.querySelector('section[data-value="custom"] input[name="shippingAddress1"]') as HTMLInputElement;
+        const shippingCityInput = document.querySelector('section[data-value="custom"] input[name="shippingCity"]') as HTMLInputElement;
+        const shippingStateInput = document.querySelector('section[data-value="custom"] input[name="shippingState"]') as HTMLInputElement;
+        const shippingZipcodeInput = document.querySelector('section[data-value="custom"] input[name="shippingZipcode"]') as HTMLInputElement;
+        const creditCardInput = document.querySelector('section[data-value="custom"] input[name="creditCard"]') as HTMLInputElement;
+        const expirationInput = document.querySelector('section[data-value="custom"] input[name="expiration"]') as HTMLInputElement;
+        const cvvInput = document.querySelector('section[data-value="custom"] input[name="cvv"]') as HTMLInputElement;
         
         firstNameInput.value = 'John';
         lastNameInput.value = 'Doe';
         emailInput.value = 'john@example.com';
         phoneInput.value = '555-123-4567';
+        shippingAddress1Input.value = '123 Main St';
+        shippingCityInput.value = 'Anytown';
+        shippingStateInput.value = 'CA';
+        shippingZipcodeInput.value = '12345';
+        creditCardInput.value = '1234567890123456';
+        expirationInput.value = '12/25';
+        cvvInput.value = '123';
         
         return validation.validateForm(true);
       });
