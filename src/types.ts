@@ -50,6 +50,7 @@ export interface FieldConfig {
   errorClass?: string;
   errorTag?: string;
   validClass?: string;
+  validateWhenHidden?: boolean;
   normalizer?: (
     value: string,
     element?: ValidatorInput,

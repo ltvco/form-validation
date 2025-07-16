@@ -359,25 +359,31 @@ export class Validation implements FormValidation {
     const errors: Array<[ValidatorInput, string]> = [];
     const errorSelector: Array<string> = [];
 
-    this.fieldsToValidate.filter(this.isFieldVisible).map((field) => {
-      const error = this.validateField(field, silently);
-      const hasOnKeyUp = field.validator.hasOnKeyUp;
+    this.fieldsToValidate
+      .filter(
+        (field) =>
+          this.isFieldVisible(field) ||
+          this.config.fields[field.name].validateWhenHidden
+      )
+      .map((field) => {
+        const error = this.validateField(field, silently);
+        const hasOnKeyUp = field.validator.hasOnKeyUp;
 
-      if (error) {
-        errors.push(error);
-        errorSelector.push(`[name="${field.name}"]`);
-      }
+        if (error) {
+          errors.push(error);
+          errorSelector.push(`[name="${field.name}"]`);
+        }
 
-      // Add "keyup" event only if field doesn't have it yet.
-      if (
-        !hasOnKeyUp &&
-        this.config.validationFlags.includes('onKeyUpAfterChange') &&
-        WRITEABLE_INPUTS.includes(field.type)
-      ) {
-        field.addEventListener('keyup', this.onChange.bind(this));
-        field.validator.hasOnKeyUp = true;
-      }
-    });
+        // Add "keyup" event only if field doesn't have it yet.
+        if (
+          !hasOnKeyUp &&
+          this.config.validationFlags.includes('onKeyUpAfterChange') &&
+          WRITEABLE_INPUTS.includes(field.type)
+        ) {
+          field.addEventListener('keyup', this.onChange.bind(this));
+          field.validator.hasOnKeyUp = true;
+        }
+      });
 
     return { errors, errorSelector };
   }
@@ -411,16 +417,14 @@ export class Validation implements FormValidation {
     const data: FormDataObject = {};
     const formData = new FormData(this.form);
 
-    for (const key of formData.keys()) {
-      const field = this.form.querySelector(
-        `[name="${key}"]`
-      ) as ValidatorInput;
-
-      if (this.isFieldVisible(field))
-        data[key] = this.sanitizeInput(
-          formData.get(key)?.toString().trim() as string
+    this.fieldsToValidate.forEach((field) => {
+      const { validateWhenHidden } = this.config.fields[field.name];
+      if (this.isFieldVisible(field) || validateWhenHidden) {
+        data[field.name] = this.sanitizeInput(
+          formData.get(field.name)?.toString().trim() as string
         );
-    }
+      }
+    });
 
     this.config.submitCallback(data, this.form);
   }
