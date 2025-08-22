@@ -2,30 +2,140 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Form Validation Library - Dev</title>
+  <title>Form Validation Library - Test Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .error {
+      color: #dc3545;
+      font-size: 12px;
+    }
+    .valid {
+      color: #28a745;
+    }
+    .input-container {
+      margin-bottom: 15px;
+    }
+    .input-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .input-container input,
+    .input-container select,
+    .input-container textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .input-container input.error,
+    .input-container select.error,
+    .input-container textarea.error {
+      border-color: #dc3545;
+    }
+    .input-container input.valid,
+    .input-container select.valid,
+    .input-container textarea.valid {
+      border-color: #28a745;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    button:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+    fieldset {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    legend {
+      font-weight: bold;
+      padding: 0 10px;
+    }
+    hr {
+      border: 0;
+      height: 1px;
+      background: #ddd;
+      margin: 20px 0;
+    }
+    .submitted {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+    .error-subtitle {
+      color: #dc3545;
+      font-size: 14px;
+      margin: 10px 0;
+    }
+    .same-as-shipping-fieldset.hidden {
+      display: none;
+    }
+    .input-container-variant {
+      margin-bottom: 15px;
+    }
+    .input-wrapper {
+      position: relative;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>Form Validation Library</h1>
-    <div>
-      <select class="form-selector"></select>
-    </div>
+    <h1>Form Validation Library - Test Page</h1>
   </header>
   <main>
+    <!-- Basic Form -->
+    <section data-value="basic" data-label="Basic Form">
+      <h2>Basic Form</h2>
+      <p>This form just uses basic validation and default messages.</p>
+      <form>
+        <div class="input-container">
+          <label for="name">Name</label>
+          <input type="text" name="name" placeholder="John Doe" />
+        </div>
+        <div class="input-container">
+          <label for="email">Email</label>
+          <input type="email" name="email" placeholder="john.doe@some.com" />
+        </div>
+        <div class="input-container">
+          <label for="password">Password</label>
+          <input type="password" name="password" placeholder="******" />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
     <!-- Custom Form -->
-    <!-- Edit this one to test your changes if you need to, changes made to this file shouldn't be committed -->
-    <style>
-      /* Add your custom styles here */
-    </style>
-    <section data-value="custom" data-label="Custom Form" class="active">
-      <p>
-        Use this form to test your custom changes.
-      </p>
+    <section data-value="custom" data-label="Custom Form">
+      <h2>Custom Form</h2>
+      <p>Use this form to test custom configurations.</p>
       <form>
         <ul id="errors-te1" class="hidden"></ul>
         <!-- Personal Information -->
         <fieldset>
-          <leyend> Personal Information </leyend>
+          <legend>Personal Information</legend>
           <div class="input-container">
             <label for="fn-te1">First Name</label>
             <input id="fn-te1" type="text" name="firstName" placeholder="Enter your First Name" required />
@@ -43,10 +153,10 @@
             <input id="ph-te1" type="tel" name="phone" placeholder="Enter your Phone" required />
           </div>
         </fieldset>
-        <hr >
+        <hr>
         <!-- Shipping Address -->
         <fieldset>
-          <leyend> Shipping Address </leyend>
+          <legend>Shipping Address</legend>
           <div class="input-container">
             <label for="ad1-te1">Address</label>
             <input id="ad1-te1" type="text" name="shippingAddress1" placeholder="Enter your Address" required />
@@ -74,8 +184,8 @@
         </fieldset>
         <!-- Billing Address -->
         <fieldset class="same-as-shipping-fieldset hidden">
-          <hr >
-          <leyend> Billing Address </leyend>
+          <hr>
+          <legend>Billing Address</legend>
           <div class="input-container">
             <label for="ad1-2-te1">Address</label>
             <input id="ad1-2-te1" type="text" name="billingAddress1" placeholder="Enter your Address" required />
@@ -97,10 +207,10 @@
             <input id="zipcode-2-te1" type="text" name="billingZipcode" placeholder="Enter your Zipcode" required />
           </div>
         </fieldset>
-        <hr >
+        <hr>
         <!-- Credit Card -->
         <fieldset>
-          <leyend> Payment Information </leyend>
+          <legend>Payment Information</legend>
           <div class="input-container">
             <label for="cc-te1">Credit Card</label>
             <input id="cc-te1" type="text" name="creditCard" placeholder="Enter your Credit Card" required />
@@ -114,82 +224,12 @@
             <input id="cvv-te1" type="text" name="cvv" placeholder="Enter your CVV" required />
           </div>
         </fieldset>
-
-        <button type="submit">Submit</button>
-      </form>
-    </section>
-    <!-- End of Custom Form-->
-
-    <section data-value="basic" data-label="Basic Form">
-      <p>This form just uses basic validation and default messages.</p>
-      <form>
-        <div class="input-container">
-          <label for="name">Name</label>
-          <input type="text" name="name" placeholder="John Doe" />
-        </div>
-        <div class="input-container">
-          <label for="email">Email</label>
-          <input type="email" name="email" placeholder="john.doe@some.com" />
-        </div>
-        <div class="input-container">
-          <label for="password">Password</label>
-          <input type="password" name="password" placeholder="******" />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </section>
-    <section data-value="custom-error-valid-class" data-label="Custom Error & Valid Classes">
-      <p>
-        The validation of this form will add custom error and valid classes.
-        <br />
-        The error will display the label and borders in orange color, while the valid class will display them green.
-      </p>
-      <form>
-        <div class="input-container">
-          <label for="vin2">VIN</label>
-          <input id="vin2" type="text" name="vin" placeholder="Enter a VIN" required />
-        </div>
-        <button>Submit</button>
-      </form>
-    </section>
-
-    <section data-value="custom-error-valid-placement" data-label="Custom Error & Valid Placement">
-      <p>
-        The validation of this form will add custom error and valid placement.
-        <br />
-        The error can't be displayed in the default position as the label and the input are both encapsuled
-        <br />
-        in a div with the class <span>input-container</span>. So, the error will be displayed in the div with the class <span>input-wrapper</span>.
-      </p>
-      <form>
-        <div class="input-container-variant">
-          <div class="input-wrapper">
-            <label for="vin-evp">VIN</label>
-            <input id="vin-evp" type="text" name="vin" placeholder="" required />
-          </div>
-        </div>
-        <button>Submit</button>
-      </form>
-    </section>
-
-    <section data-value="invalid-handler" data-label="Invalid Handler">
-      <p>In this case, when an error is shown, the form will show a custom message on top of all fields that read "Oh No! We have errors :(" using the <span>invalidHandler</span> provided by the component.</p>
-      <form>
-        <h3 class="error-subtitle hidden">Oh No! We have errors :(</h3>
-        <div class="input-container">
-          <label for="vin-ih">VIN</label>
-          <input id="vin-ih" type="text" name="vin" placeholder="Enter a VIN" required />
-        </div>
-        <div class="input-container">
-          <label for="tos-ih">Do you agree with the Terms of Service?</label>
-          <input id="tos-ih" type="checkbox" name="tos" required />
-        </div>
         <button type="submit">Submit</button>
       </form>
     </section>
 
     <section data-value="on-key-up" data-label="Validate on Key Up">
-      <p>This will validate the field on key up.</p>
+      <h2>Validate on Key Up</h2>
       <form>
         <div class="input-container">
           <label for="vin-ku">VIN</label>
@@ -200,7 +240,7 @@
     </section>
 
     <section data-value="on-change" data-label="Validate on Change">
-      <p>This will validate the field on change.</p>
+      <h2>Validate on Change</h2>
       <form>
         <div class="input-container">
           <label for="vin-c">VIN</label>
@@ -214,42 +254,8 @@
       </form>
     </section>
 
-    <section data-value="on-key-up-after-change" data-label="Validate on Key Up After Change">
-      <p>This will validate the field on key up, but only after the field has been triggered the onChange event first.</p>
-      <form>
-        <div class="input-container">
-          <label for="vin-kuac">VIN</label>
-          <input id="vin-kuac" type="text" name="vin" placeholder="Enter a VIN" required />
-        </div>
-        <div class="input-container">
-          <label for="tos-kuac">Do you agree with the Terms of Service?</label>
-          <input id="tos-kuac" type="checkbox" name="tos" required />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </section>
-
-    <section data-value="on-submit" data-label="Validate on Submit">
-      <p>This will only validate the field on when the form is submitted.</p>
-      <form>
-        <div class="input-container">
-          <label for="vin-s">VIN</label>
-          <input id="vin-s" type="text" name="vin" placeholder="Enter a VIN" required />
-        </div>
-        <div class="input-container">
-          <label for="tos-s">Do you agree with the Terms of Service?</label>
-          <input id="tos-s" type="checkbox" name="tos" required />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </section>
-
     <section data-value="custom-rules" data-label="Add Custom Rules">
-      <p>
-        In this instance, we're creating a custom rule ouside of the default ones.
-        <br />
-        You will need to write the word "Accept" in the input field to pass the validation.
-      </p>
+      <h2>Add Custom Rules</h2>
       <form>
         <div class="input-container">
           <label for="accept-in">Do You Accept?</label>
@@ -260,7 +266,7 @@
     </section>
 
     <section data-value="field-handlers" data-label="Field Handlers">
-      <p>In this example, we're using the <span>fieldValidHandler</span> and <span>fieldErrorHandler</span> callbacks to disable the submit button when the form is invalid and enable it when it's valid.</p>
+      <h2>Field Handlers</h2>
       <form>
         <div class="input-container">
           <label for="fn-hu">First Name</label>
@@ -275,7 +281,7 @@
     </section>
 
     <section data-value="normalizer" data-label="Normalizer">
-      <p>In terms of functionality, it's just a normal validation, but the value will be normalized by passing through a function before it's validated.</p>
+      <h2>Normalizer</h2>
       <form>
         <div class="input-container">
           <label for="fn-n">First Name</label>
@@ -289,31 +295,8 @@
       </form>
     </section>
 
-    <section data-value="required-validation" data-label="Required Validation">
-      <p>
-        Again, this is just a normal validation, but when initializing this form validation, both the <span>config</span> and the <span>rules</span> are empty.
-        <br />
-        The validation is being added just because the inputs had the <span>required</span> attribute.
-      </p>
-      <form>
-        <div class="input-container">
-          <label for="fn-rv">First Name</label>
-          <input id="fn-rv" type="text" name="firstName" placeholder="Enter your First Name" required />
-        </div>
-        <div class="input-container">
-          <label for="ln-rv">Last Name</label>
-          <input id="ln-rv" type="text" name="lastName" placeholder="Enter your Last Name" required />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </section>
-
     <section data-value="messages" data-label="Functions as Messages">
-      <p>
-        In this example, we're using functions as messages.
-        <br />
-        The <span>messages</span> object is being used to override the default messages, so they will be different than the messages at other forms with these fields.
-      </p>
+      <h2>Functions as Messages</h2>
       <form>
         <div class="input-container">
           <label for="vin-m">VIN</label>
@@ -328,14 +311,10 @@
     </section>
 
     <section data-value="dynamic-validation" data-label="Dynamic Validation">
-      <p>
-        Only fields visible are going to be validated, any hidden fields will be ignored.
-        <br />
-        In this case, the billing fields are marked as required, however since they're initially hidden, they won't be validated unless the user clicks on the checkbox and the fields are shown.
-      </p>
+      <h2>Dynamic Validation</h2>
       <form>
         <fieldset>
-          <leyend> Shipping Address </leyend>
+          <legend>Shipping Address</legend>
           <div class="input-container">
             <label for="dv-ad1">Address</label>
             <input id="dv-ad1" type="text" name="shippingAddress1" placeholder="Enter your Address" required />
@@ -354,24 +333,33 @@
           </div>
         </fieldset>
         <fieldset class="same-as-shipping-fieldset hidden">
-          <hr >
-          <leyend> Billing Address </leyend>
+          <hr>
+          <legend>Billing Address</legend>
           <div class="input-container">
-            <label for="dv-ad1">Address</label>
-            <input id="dv-ad1" type="text" name="billingAddress1" placeholder="Enter your Address" required />
+            <label for="dv-bad1">Address</label>
+            <input id="dv-bad1" type="text" name="billingAddress1" placeholder="Enter your Address" required />
           </div>
           <div class="input-container">
-            <label for="dv-ad2">Apt. #</label>
-            <input id="dv-ad2" type="text" name="billingAddress2" placeholder="Enter your Apt. #" />
+            <label for="dv-bad2">Apt. #</label>
+            <input id="dv-bad2" type="text" name="billingAddress2" placeholder="Enter your Apt. #" />
           </div>
           <div class="input-container">
-            <label for="dv-city">City</label>
-            <input id="dv-city" type="text" name="billingCity" placeholder="Enter your City" required />
+            <label for="dv-bcity">City</label>
+            <input id="dv-bcity" type="text" name="billingCity" placeholder="Enter your City" required />
           </div>
         </fieldset>
         <button type="submit">Submit</button>
       </form>
     </section>
   </main>
+
+  <!-- Load the built library -->
+  <script src="/dist/index.js"></script>
+  <script>
+    // The UMD build should expose FormValidation as a global variable
+    if (typeof Validation === 'undefined') {
+      console.error('FormValidation library not loaded properly');
+    }
+  </script>
 </body>
-</html>
+</html> 
