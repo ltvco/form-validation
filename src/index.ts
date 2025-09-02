@@ -45,7 +45,7 @@ export class Validation implements FormValidation {
       'onChange',
       'onKeyUpAfterChange',
     ] as Array<Flag>,
-    submitCallback: this.defaultSubmit,
+    submitCallback: undefined,
     invalidHandler: () => {
       /* Do nothing */
     },
@@ -456,7 +456,7 @@ export class Validation implements FormValidation {
       }
     });
 
-    this.config.submitCallback(data, this.form);
+    this.config.submitCallback ? this.config.submitCallback(data, this.form) : this.defaultSubmit();
   }
 
   /**

@@ -75,10 +75,10 @@ export interface Config {
     [key: string]: FieldConfig;
   };
   validationFlags: Array<Flag>;
-  submitCallback: (
+  submitCallback?: ((
     formDataObj: { [key: string]: string },
     form?: HTMLFormElement
-  ) => void;
+  ) => void);
   invalidHandler: (
     errors: Array<[ValidatorInput, Message] | boolean>,
     form?: HTMLFormElement
