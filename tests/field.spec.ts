@@ -811,7 +811,7 @@ test.describe('Form Validation Field Options Tests', () => {
               fieldHandlerKeepFunctionality: false,
               fieldValidHandler: (field, fieldConfig, form) => {
                 // Custom handler that adds a custom class instead of default valid handling
-                field.classList.add('custom-valid-field');
+                field.classList.add('success');
               }
             },
           },
@@ -824,7 +824,7 @@ test.describe('Form Validation Field Options Tests', () => {
       await nameInput.blur();
 
       // Should use custom valid handling
-      await expect(page.locator('section[data-value="basic"] input[name="name"]')).toHaveClass(/custom-valid-field/);
+      await expect(page.locator('section[data-value="basic"] input[name="name"]')).toHaveClass(/success/);
       
       // Should not have default valid class
       await expect(page.locator('section[data-value="basic"] input[name="name"]')).not.toHaveClass(/valid/);

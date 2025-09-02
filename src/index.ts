@@ -464,7 +464,7 @@ export class Validation implements FormValidation {
    * sanitize all inputs and submit the form.
    */
   private defaultSubmit() {
-    this.fieldsToValidate.filter(this.isFieldVisible).map((field) => {
+    this.fieldsToValidate.filter(field => this.isFieldVisible(field) || this.config.fields[field.name].validateWhenHidden).map((field) => {
       field.value = this.sanitizeInput(field.value);
     });
 
@@ -520,14 +520,14 @@ export class Validation implements FormValidation {
    */
   private setupFieldConfig(
     fieldName: string,
-    rules: FieldConfig['rules'],
+    rules?: FieldConfig['rules'],
     messages?: FieldConfig['messages']
   ) {
     const field = this.form.querySelector(
       `[name="${fieldName}"]`
     ) as ValidatorInput;
     if (!field) throw new Error(`Field ${fieldName} was not found in the form`);
-    if (!rules) throw new Error('Rules cannot be empty');
+    if (!rules) rules = [];
     if (!Array.isArray(rules)) throw new Error('Rules must be an array');
     if (messages && typeof messages !== 'object')
       throw new Error('Messages must be an object');
@@ -560,7 +560,7 @@ export class Validation implements FormValidation {
       hasOnKeyUp: false,
     };
 
-    const { inputContainer, optional } = this.config.fields[fieldName];
+    const { inputContainer, optional, validateWhenHidden } = this.config.fields[fieldName];
     if (inputContainer && typeof inputContainer === 'string') {
       const inputContainerElement = field.closest(
         inputContainer
@@ -581,6 +581,10 @@ export class Validation implements FormValidation {
 
     if (!optional && !rules.includes('required'))
       this.addFieldRule(fieldName, 'required');
+
+    if ((validateWhenHidden || optional) && !this.fieldsToValidate.includes(field)) {
+      this.fieldsToValidate.push(field);
+    }
   }
 
   /**

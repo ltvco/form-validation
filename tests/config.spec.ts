@@ -263,6 +263,9 @@ test.describe('Form Validation Config Options Tests', () => {
             fields: {
               name: { rules: ['required'] },
               email: { rules: ['required', 'validEmail'] },
+              password: { 
+                validateWhenHidden: true,
+              },
             },
           });
 
