@@ -91,8 +91,8 @@ export class Validation implements FormValidation {
       Object.keys(rules).forEach((rule) => {
         if (typeof rules[rule]?.validator !== 'function')
           throw new Error(`${rule} must be a function.`);
-        if (typeof rules[rule]?.message !== 'string')
-          throw new Error(`${rule} message must be a string.`);
+        if (typeof rules[rule]?.message !== 'string' && typeof rules[rule]?.message !== 'function')
+          throw new Error(`${rule} message must be a string or a function.`);
 
         this.addMethod(rule, rules[rule].validator, rules[rule].message);
       });
