@@ -1002,7 +1002,7 @@ This function adds a validation rule to a specific field. If the field already h
 | ----------- | -------- | -------------------------------------------------------- |
 | `fieldName` | `string` | _[Required]_ The name of the field.                      |
 | `ruleName`  | `string` | _[Required]_ The name of the validation rule.            |
-| `message`   | `string` | _[Required]_ The custom message for the validation rule. |
+| `message`   | `string` | _[Optional]_ The custom message for the validation rule. |
 
 **Usage**
 

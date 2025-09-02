@@ -101,6 +101,6 @@ export interface FormValidation {
     rules?: Array<string>,
     messages?: PreprocessedMessages
   ) => void;
-  addFieldRule: (fieldName: string, ruleName: string, message: Message) => void;
+  addFieldRule: (fieldName: string, ruleName: string, message?: Message) => void;
   removeFieldRule: (fieldName: string, ruleName: string) => void;
 }
