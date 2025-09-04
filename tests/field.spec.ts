@@ -811,7 +811,7 @@ test.describe('Form Validation Field Options Tests', () => {
               fieldHandlerKeepFunctionality: false,
               fieldValidHandler: (field, fieldConfig, form) => {
                 // Custom handler that adds a custom class instead of default valid handling
-                field.classList.add('custom-valid-field');
+                field.classList.add('success');
               }
             },
           },
@@ -824,7 +824,7 @@ test.describe('Form Validation Field Options Tests', () => {
       await nameInput.blur();
 
       // Should use custom valid handling
-      await expect(page.locator('section[data-value="basic"] input[name="name"]')).toHaveClass(/custom-valid-field/);
+      await expect(page.locator('section[data-value="basic"] input[name="name"]')).toHaveClass(/success/);
       
       // Should not have default valid class
       await expect(page.locator('section[data-value="basic"] input[name="name"]')).not.toHaveClass(/valid/);
@@ -854,6 +854,74 @@ test.describe('Form Validation Field Options Tests', () => {
       // Should have both custom and default valid handling
       await expect(page.locator('section[data-value="basic"] input[name="name"]')).toHaveClass(/custom-valid-field/);
       await expect(page.locator('section[data-value="basic"] input[name="name"]')).toHaveClass(/valid/);
+    });
+  });
+
+  test.describe('validateWhenHidden Option', () => {
+    test('should not validate hidden field by default', async ({ page }) => {
+      await page.evaluate(() => {
+        new window.Validation('section[data-value="basic"] form', {
+          fields: {
+            hiddenField: {
+              rules: ['required'],
+            },
+          },
+        });
+      });
+
+      const submitButton = page.locator('section[data-value="basic"] button[type="submit"]');
+      await submitButton.click();
+
+      // Should not show error for hidden field
+      await expect(page.locator('.hiddenField-error-element')).not.toBeVisible();
+    });
+
+    test('should validate hidden field when validateWhenHidden is true', async ({ page }) => {
+      await page.evaluate(() => {
+        const form = document.querySelector('section[data-value="basic"] form') as HTMLFormElement;
+        const hiddenInput = form.querySelector('input[name="hiddenField"]') as HTMLInputElement;
+        hiddenInput.value = ''; // Make it empty to trigger 'required' rule
+
+        new window.Validation(form, {
+          fields: {
+            hiddenField: {
+              rules: ['required'],
+              validateWhenHidden: true,
+            },
+          },
+        });
+      });
+
+      const submitButton = page.locator('section[data-value="basic"] button[type="submit"]');
+      await submitButton.click();
+
+      // Should show error for hidden field because validateWhenHidden is true
+      await expect(page.locator('.hiddenField-error-element')).toBeVisible();
+      await expect(page.locator('.hiddenField-error-element')).toHaveText('This field is required');
+    });
+
+    test('should include hidden field in submission when validateWhenHidden is true', async ({ page }) => {
+      const result = page.evaluate(() => {
+        return new Promise((resolve) => {
+          new window.Validation('section[data-value="basic"] form', {
+            fields: {
+              hiddenField: {
+                rules: ['required'],
+                validateWhenHidden: true,
+              },
+            },
+            submitCallback: (formData) => {
+              resolve(formData);
+            }
+          });
+        });
+      });
+      
+      const submitButton = page.locator('section[data-value="basic"] button[type="submit"]');
+      await submitButton.click();
+
+      // Should submit the form and include the hidden field value
+      expect(await result).toHaveProperty('hiddenField', 'secret-value');
     });
   });
 

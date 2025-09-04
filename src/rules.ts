@@ -45,6 +45,7 @@ const rules: Rules = {
     },
     message: 'Empty spaces are not allowed',
   },
+  // The name might be a bit confusing, but it's used to validate if the field is empty or contains at least 1 letter
   emptyOrLetters: {
     validator: function (element: ValidatorInput, value: string) {
       return (value !== '' && /[a-z]+/i.test(value)) || value === '';

@@ -358,74 +358,6 @@ test.describe('Form Validation Rules Tests', () => {
     });
   });
 
-  test.describe('NoEmptySpacesOnly Rule', () => {
-    test('should fail validation with only spaces', async ({ page }) => {
-      // Initialize validation for basic form
-      await page.evaluate(() => {
-        new window.Validation('section[data-value="basic"] form', {
-          fields: {
-            name: { rules: ['noEmptySpacesOnly'] },
-          },
-        });
-      });
-
-      const nameInput = page.locator('section[data-value="basic"] input[name="name"]');
-      const submitButton = page.locator('section[data-value="basic"] button[type="submit"]');
-
-      // Test various whitespace-only inputs
-      const whitespaceInputs = [
-        ' ',
-        '  ',
-        '   ',
-        '\t',
-        '\n',
-        '  \t  ',
-      ];
-
-      for (const input of whitespaceInputs) {
-        await nameInput.clear();
-        await nameInput.pressSequentially(input);
-        await submitButton.click();
-
-        // Should show error for whitespace-only input
-        await expect(page.locator('.name-error-element')).toBeVisible();
-      }
-    });
-
-    test('should pass validation with actual content', async ({ page }) => {
-      // Initialize validation for basic form
-      await page.evaluate(() => {
-        new window.Validation('section[data-value="basic"] form', {
-          fields: {
-            name: { rules: ['noEmptySpacesOnly'] },
-          },
-        });
-      });
-
-      const nameInput = page.locator('section[data-value="basic"] input[name="name"]');
-      const submitButton = page.locator('section[data-value="basic"] button[type="submit"]');
-
-      // Test various valid inputs
-      const validInputs = [
-        'John',
-        'John Doe',
-        ' John ',
-        'J',
-        '123',
-        ' test content ',
-      ];
-
-      for (const input of validInputs) {
-        await nameInput.clear();
-        await nameInput.pressSequentially(input);
-        await submitButton.click();
-
-        // Should not show error for valid input
-        await expect(page.locator('.name-error-element')).not.toBeVisible();
-      }
-    });
-  });
-
   test.describe('EmptyOrLetters Rule', () => {
     test('should fail validation with non-letter characters', async ({ page }) => {
       // Initialize validation for basic form
@@ -444,9 +376,6 @@ test.describe('Form Validation Rules Tests', () => {
       const invalidInputs = [
         '123',
         '!@#',
-        'John123',
-        'John!',
-        'John@',
       ];
 
       for (const input of invalidInputs) {

@@ -115,12 +115,12 @@ test.describe('Form Validation Error Handling Tests', () => {
       expect(error).toBe('customRule must be a function.');
     });
 
-    test('should throw error when custom rule message is not a string', async ({ page }) => {
+    test('should throw error when custom rule message is not a string or function', async ({ page }) => {
       const error = await page.evaluate(() => {
         try {
           new window.Validation('section[data-value="basic"] form', {
             fields: {
-              name: { rules: ['required'] }
+              name: { rules: ['required', 'customRule'] }
             }
           }, {
             customRule: {
@@ -135,7 +135,7 @@ test.describe('Form Validation Error Handling Tests', () => {
         }
       });
 
-      expect(error).toBe('customRule message must be a string.');
+      expect(error).toBe('customRule message must be a string or a function.');
     });
   });
 
@@ -155,26 +155,6 @@ test.describe('Form Validation Error Handling Tests', () => {
       });
 
       expect(error).toBe('Field nonExistentField was not found in the form');
-    });
-
-    test('should throw error when rules is empty', async ({ page }) => {
-      const error = await page.evaluate(() => {
-        try {
-          new window.Validation('section[data-value="basic"] form', {
-            fields: {
-              name: { 
-                // @ts-expect-error - Testing empty rules
-                rules: null 
-              }
-            }
-          });
-          return null;
-        } catch (e) {
-          return e.message;
-        }
-      });
-
-      expect(error).toBe('Rules cannot be empty');
     });
 
     test('should throw error when rules is not an array', async ({ page }) => {

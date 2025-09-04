@@ -45,7 +45,7 @@ export class Validation implements FormValidation {
       'onChange',
       'onKeyUpAfterChange',
     ] as Array<Flag>,
-    submitCallback: this.defaultSubmit,
+    submitCallback: undefined,
     invalidHandler: () => {
       /* Do nothing */
     },
@@ -91,8 +91,8 @@ export class Validation implements FormValidation {
       Object.keys(rules).forEach((rule) => {
         if (typeof rules[rule]?.validator !== 'function')
           throw new Error(`${rule} must be a function.`);
-        if (typeof rules[rule]?.message !== 'string')
-          throw new Error(`${rule} message must be a string.`);
+        if (typeof rules[rule]?.message !== 'string' && typeof rules[rule]?.message !== 'function')
+          throw new Error(`${rule} message must be a string or a function.`);
 
         this.addMethod(rule, rules[rule].validator, rules[rule].message);
       });
@@ -106,6 +106,36 @@ export class Validation implements FormValidation {
   }
 
   /*********************** Private Methods ***********************/
+
+  /**
+   * Clones an object deeply.
+   * We need this method to clone the configuration object and allow us to use the same configuration object in different instances.
+   * @param {T} obj - Object to clone.
+   * @returns {T} - Cloned object.
+   */
+  private cloneDeep<T>(obj: T): T {
+    if (obj === null || typeof obj !== 'object') {
+      return obj;
+    }
+
+    if (obj instanceof Node) {
+      return obj;
+    }
+
+    if (Array.isArray(obj)) {
+      const copy: any = [];
+      obj.forEach((elem, index) => {
+        copy[index] = this.cloneDeep(elem);
+      });
+      return copy;
+    }
+
+    const copy: any = {};
+    Object.keys(obj).forEach((key) => {
+      copy[key] = this.cloneDeep((obj as any)[key]);
+    });
+    return copy;
+  }
 
   /**
    * Normalizes a field's value.
@@ -195,7 +225,6 @@ export class Validation implements FormValidation {
     message: string,
     fieldConfig: FieldConfig
   ) {
-    this.errors.push([field, message]);
     const {
       optional,
       errorClass,
@@ -333,6 +362,7 @@ export class Validation implements FormValidation {
 
       if (errorRule) {
         const errorMessage = messages[errorRule];
+        this.errors.push([field, errorMessage as string]);
 
         if (!silently)
           this.onError(
@@ -359,25 +389,31 @@ export class Validation implements FormValidation {
     const errors: Array<[ValidatorInput, string]> = [];
     const errorSelector: Array<string> = [];
 
-    this.fieldsToValidate.filter(this.isFieldVisible).map((field) => {
-      const error = this.validateField(field, silently);
-      const hasOnKeyUp = field.validator.hasOnKeyUp;
+    this.fieldsToValidate
+      .filter(
+        (field) =>
+          this.isFieldVisible(field) ||
+          this.config.fields[field.name].validateWhenHidden
+      )
+      .map((field) => {
+        const error = this.validateField(field, silently);
+        const hasOnKeyUp = field.validator.hasOnKeyUp;
 
-      if (error) {
-        errors.push(error);
-        errorSelector.push(`[name="${field.name}"]`);
-      }
+        if (error) {
+          errors.push(error);
+          errorSelector.push(`[name="${field.name}"]`);
+        }
 
-      // Add "keyup" event only if field doesn't have it yet.
-      if (
-        !hasOnKeyUp &&
-        this.config.validationFlags.includes('onKeyUpAfterChange') &&
-        WRITEABLE_INPUTS.includes(field.type)
-      ) {
-        field.addEventListener('keyup', this.onChange.bind(this));
-        field.validator.hasOnKeyUp = true;
-      }
-    });
+        // Add "keyup" event only if field doesn't have it yet.
+        if (
+          !hasOnKeyUp &&
+          this.config.validationFlags.includes('onKeyUpAfterChange') &&
+          WRITEABLE_INPUTS.includes(field.type)
+        ) {
+          field.addEventListener('keyup', this.onChange.bind(this));
+          field.validator.hasOnKeyUp = true;
+        }
+      });
 
     return { errors, errorSelector };
   }
@@ -411,18 +447,16 @@ export class Validation implements FormValidation {
     const data: FormDataObject = {};
     const formData = new FormData(this.form);
 
-    for (const key of formData.keys()) {
-      const field = this.form.querySelector(
-        `[name="${key}"]`
-      ) as ValidatorInput;
-
-      if (this.isFieldVisible(field))
-        data[key] = this.sanitizeInput(
-          formData.get(key)?.toString().trim() as string
+    this.fieldsToValidate.forEach((field) => {
+      const { validateWhenHidden } = this.config.fields[field.name];
+      if (this.isFieldVisible(field) || validateWhenHidden) {
+        data[field.name] = this.sanitizeInput(
+          formData.get(field.name)?.toString().trim() as string
         );
-    }
+      }
+    });
 
-    this.config.submitCallback(data, this.form);
+    this.config.submitCallback ? this.config.submitCallback(data, this.form) : this.defaultSubmit();
   }
 
   /**
@@ -430,7 +464,7 @@ export class Validation implements FormValidation {
    * sanitize all inputs and submit the form.
    */
   private defaultSubmit() {
-    this.fieldsToValidate.filter(this.isFieldVisible).map((field) => {
+    this.fieldsToValidate.filter(field => this.isFieldVisible(field) || this.config.fields[field.name].validateWhenHidden).map((field) => {
       field.value = this.sanitizeInput(field.value);
     });
 
@@ -486,14 +520,14 @@ export class Validation implements FormValidation {
    */
   private setupFieldConfig(
     fieldName: string,
-    rules: FieldConfig['rules'],
+    rules?: FieldConfig['rules'],
     messages?: FieldConfig['messages']
   ) {
     const field = this.form.querySelector(
       `[name="${fieldName}"]`
     ) as ValidatorInput;
     if (!field) throw new Error(`Field ${fieldName} was not found in the form`);
-    if (!rules) throw new Error('Rules cannot be empty');
+    if (!rules) rules = [];
     if (!Array.isArray(rules)) throw new Error('Rules must be an array');
     if (messages && typeof messages !== 'object')
       throw new Error('Messages must be an object');
@@ -526,7 +560,7 @@ export class Validation implements FormValidation {
       hasOnKeyUp: false,
     };
 
-    const { inputContainer, optional } = this.config.fields[fieldName];
+    const { inputContainer, optional, validateWhenHidden } = this.config.fields[fieldName];
     if (inputContainer && typeof inputContainer === 'string') {
       const inputContainerElement = field.closest(
         inputContainer
@@ -547,6 +581,10 @@ export class Validation implements FormValidation {
 
     if (!optional && !rules.includes('required'))
       this.addFieldRule(fieldName, 'required');
+
+    if ((validateWhenHidden || optional) && !this.fieldsToValidate.includes(field)) {
+      this.fieldsToValidate.push(field);
+    }
   }
 
   /**
@@ -581,6 +619,7 @@ export class Validation implements FormValidation {
    * @returns True if all fields are valid, false otherwise.
    */
   isValid(): boolean {
+    this.validateAllVisibleFields(true);
     return this.errors.length === 0;
   }
 
@@ -591,7 +630,7 @@ export class Validation implements FormValidation {
    */
   validateForm(silently = true): boolean {
     this.validateAllVisibleFields(silently);
-    return this.isValid();
+    return this.errors.length === 0;
   }
 
   /**
@@ -770,32 +809,6 @@ export class Validation implements FormValidation {
 
     this.config.fields[fieldName] = { ...config };
     this.setupFieldConfig(fieldName, config.rules, config.messages);
-  }
-
-  /**
-   * Clones an object deeply.
-   * We need this method to clone the configuration object and allow us to use the same configuration object in different instances.
-   * @param {T} obj - Object to clone.
-   * @returns {T} - Cloned object.
-   */
-  cloneDeep<T>(obj: T): T {
-    if (obj === null || typeof obj !== 'object') {
-      return obj;
-    }
-
-    if (Array.isArray(obj)) {
-      const copy: any = [];
-      obj.forEach((elem, index) => {
-        copy[index] = this.cloneDeep(elem);
-      });
-      return copy;
-    }
-
-    const copy: any = {};
-    Object.keys(obj).forEach((key) => {
-      copy[key] = this.cloneDeep((obj as any)[key]);
-    });
-    return copy;
   }
 }
 

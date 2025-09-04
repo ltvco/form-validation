@@ -50,6 +50,7 @@ export interface FieldConfig {
   errorClass?: string;
   errorTag?: string;
   validClass?: string;
+  validateWhenHidden?: boolean;
   normalizer?: (
     value: string,
     element?: ValidatorInput,
@@ -74,10 +75,10 @@ export interface Config {
     [key: string]: FieldConfig;
   };
   validationFlags: Array<Flag>;
-  submitCallback: (
+  submitCallback?: ((
     formDataObj: { [key: string]: string },
     form?: HTMLFormElement
-  ) => void;
+  ) => void);
   invalidHandler: (
     errors: Array<[ValidatorInput, Message] | boolean>,
     form?: HTMLFormElement
@@ -100,6 +101,6 @@ export interface FormValidation {
     rules?: Array<string>,
     messages?: PreprocessedMessages
   ) => void;
-  addFieldRule: (fieldName: string, ruleName: string, message: Message) => void;
+  addFieldRule: (fieldName: string, ruleName: string, message?: Message) => void;
   removeFieldRule: (fieldName: string, ruleName: string) => void;
 }

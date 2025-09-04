@@ -568,6 +568,31 @@ const myConfig = {
 
 ---
 
+#### `validateWhenHidden`
+
+A boolean flag to determine if a field should be validated even when it's not visible. This is particularly useful for hidden input fields that should always be included in validation.
+
+**Default Value:** `false`
+
+**Usage**
+
+```js
+const myConfig = {
+  ...
+  fields: {
+    'hiddenField': {
+      validateWhenHidden: true,
+      rules: ['required'],
+      ...
+    },
+    ...
+  }
+  ...
+}
+```
+
+---
+
 #### `normalizer`
 
 This function serves the purpose of adjusting the value in any way before it's validated. This function is destructive so it will change the value of the input. If the function is present, it will be added to the `onKeyDown` event to writeable inputs (`text`, `password`, `email`, etc.), or `onChange` to all other inputs before being validated.
@@ -977,7 +1002,7 @@ This function adds a validation rule to a specific field. If the field already h
 | ----------- | -------- | -------------------------------------------------------- |
 | `fieldName` | `string` | _[Required]_ The name of the field.                      |
 | `ruleName`  | `string` | _[Required]_ The name of the validation rule.            |
-| `message`   | `string` | _[Required]_ The custom message for the validation rule. |
+| `message`   | `string` | _[Optional]_ The custom message for the validation rule. |
 
 **Usage**
 
