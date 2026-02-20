@@ -35,7 +35,7 @@ const rules: Rules = {
   },
   noSpecialCharacters: {
     validator: function (element: ValidatorInput, value: string) {
-      return !/[$-/:-?{-~!"^_`[\]]/.test(value);
+      return !/[$%&'()*+,\-./:;<=>?{|}~!"^_`[\]\\]/.test(value);
     },
     message: 'Special characters are not allowed',
   },
